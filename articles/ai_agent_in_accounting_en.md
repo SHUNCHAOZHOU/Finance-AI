@@ -1,6 +1,6 @@
 # From Rule-Based Automation to Autonomous Orchestration: The Evolution and Re-architecture of AI Agents in Accounting
 
-> **Author**: SHUNCHAOZHOU  
+> **Author**: [SHUNCHAOZHOU](https://www.linkedin.com/in/shunchao-zhou-aab272324/)  
 > **Repository**: [Finance-AI](https://github.com/SHUNCHAOZHOU/Finance-AI)  
 > **Published**: 2026  
 > **Key Tags**: `AI Agent` `Intelligent Accounting` `Multi-Agent Systems (MAS)` `Financial LLM` `Record-to-Report (R2R)` `Autonomous Month-End Close`

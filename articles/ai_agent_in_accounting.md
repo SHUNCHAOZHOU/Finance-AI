@@ -1,6 +1,6 @@
 # 从规则驱动到自主协同：AI Agent 在会计行业的落地演进与未来重塑
 
-> **作者**：SHUNCHAOZHOU  
+> **作者**：[SHUNCHAOZHOU](https://www.linkedin.com/in/shunchao-zhou-aab272324/)  
 > **项目仓库**：[Finance-AI](https://github.com/SHUNCHAOZHOU/Finance-AI)  
 > **更新时间**：2026 年  
 > **核心标签**：`AI Agent` `智能会计` `多智能体协同` `财务大模型` `R2R` `自动化月结`

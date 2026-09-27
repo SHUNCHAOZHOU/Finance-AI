@@ -5,11 +5,12 @@
   <img src="https://img.shields.io/badge/Domain-Accounting%20%7C%20Quant%20%7C%20Risk-emerald.svg" alt="Domain">
   <img src="https://img.shields.io/badge/Tech-AI%20Agent%20%7C%20Multi--Agent%20(MAS)-purple.svg" alt="Technology">
   <img src="https://img.shields.io/badge/Language-English%20(Default)%20%7C%20%E4%B8%AD%E6%96%87-blueviolet.svg" alt="Language">
+  <a href="https://www.linkedin.com/in/shunchao-zhou-aab272324/"><img src="https://img.shields.io/badge/LinkedIn-SHUNCHAOZHOU-0A66C2?logo=linkedin" alt="LinkedIn"></a>
   <img src="https://img.shields.io/badge/Status-Actively%20Updated-success.svg" alt="Status">
   <img src="https://img.shields.io/badge/License-MIT-orange.svg" alt="License">
 </p>
 
-> **Finance-AI** is an **evolving, open-source research and engineering platform** dedicated to exploring, designing, and operationalizing **autonomous AI Agents and Multi-Agent Systems (MAS)** across corporate accounting, intelligent auditing, quantitative research, and dynamic risk management.
+> **Finance-AI** is an **evolving, open-source research and engineering platform** maintained by [SHUNCHAOZHOU](https://www.linkedin.com/in/shunchao-zhou-aab272324/), dedicated to exploring, designing, and operationalizing **autonomous AI Agents and Multi-Agent Systems (MAS)** across corporate accounting, intelligent auditing, quantitative research, and dynamic risk management.
 
 🌐 **Live Interactive Website**: [**https://shunchaozhou.github.io/Finance-AI/**](https://shunchaozhou.github.io/Finance-AI/)  
 *(Defaults to full English with one-click instant toggle to Chinese; includes dark/light modes, KaTeX math typesetting, code highlighting, and live interactive Multi-Agent pipeline simulations)*
