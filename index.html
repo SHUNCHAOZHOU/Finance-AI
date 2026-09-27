@@ -285,11 +285,19 @@
       gap: 0.6rem;
     }
 
-    /* Filter Tabs */
+    /* Filter Tabs & Controls */
+    .filter-controls-wrapper {
+      margin-bottom: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
     .filter-bar {
       display: flex;
       gap: 0.6rem;
-      margin-bottom: 2.2rem;
       flex-wrap: wrap;
     }
 
@@ -297,21 +305,43 @@
       background: var(--bg-surface);
       border: 1px solid var(--border-color);
       color: var(--text-secondary);
-      padding: 0.45rem 1rem;
-      border-radius: 8px;
-      font-size: 0.88rem;
-      font-weight: 500;
+      padding: 0.5rem 1.15rem;
+      border-radius: 999px;
+      font-size: 0.86rem;
+      font-weight: 600;
       cursor: pointer;
-      display: flex;
+      display: inline-flex;
       align-items: center;
-      gap: 0.45rem;
+      gap: 0.5rem;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      user-select: none;
     }
 
-    .filter-btn:hover, .filter-btn.active {
-      background: var(--accent);
-      color: #0f172a;
+    .filter-btn:hover {
+      background: var(--bg-surface-elevated);
+      color: var(--text-primary);
       border-color: var(--accent);
+      transform: translateY(-1px);
+    }
+
+    .filter-btn.active {
+      background: var(--accent);
+      color: #ffffff !important;
+      border-color: var(--accent);
+      box-shadow: 0 4px 14px rgba(2, 132, 199, 0.3);
+    }
+
+    .filter-count-badge {
+      font-size: 0.8rem;
       font-weight: 600;
+      color: var(--accent);
+      background: rgba(2, 132, 199, 0.1);
+      padding: 0.35rem 0.85rem;
+      border-radius: 999px;
+      border: 1px solid rgba(2, 132, 199, 0.25);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
     }
 
     /* Featured Post Card */
@@ -729,11 +759,15 @@
           <span id="lang-indicator">中文</span>
         </button>
 
-        <a href="https://www.linkedin.com/in/shunchao-zhou-aab272324/" class="icon-btn" target="_blank" rel="noopener" title="LinkedIn Profile">
-          <i data-lucide="linkedin"></i>
+        <a href="https://www.linkedin.com/in/shunchao-zhou-aab272324/" class="icon-btn" target="_blank" rel="noopener" title="LinkedIn Profile" aria-label="LinkedIn Profile">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+          </svg>
         </a>
-        <a href="https://github.com/SHUNCHAOZHOU/Finance-AI" class="icon-btn" target="_blank" rel="noopener" title="GitHub Repository">
-          <i data-lucide="github"></i>
+        <a href="https://github.com/SHUNCHAOZHOU/Finance-AI" class="icon-btn" target="_blank" rel="noopener" title="GitHub Repository" aria-label="GitHub Repository">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+          </svg>
         </a>
         <button id="theme-toggle" class="icon-btn" title="Toggle Light/Dark Theme">
           <i data-lucide="sun" id="theme-icon"></i>
@@ -778,27 +812,8 @@
   <!-- Main Container -->
   <main class="main-container">
 
-    <!-- Category Filter Bar -->
-    <div class="filter-bar">
-      <button class="filter-btn active" data-category="all">
-        <i data-lucide="layers"></i> <span data-i18n="filter_all">All Domains</span>
-      </button>
-      <button class="filter-btn" data-category="accounting">
-        <i data-lucide="receipt"></i> <span data-i18n="filter_accounting">Accounting & Auditing</span>
-      </button>
-      <button class="filter-btn" data-category="quant">
-        <i data-lucide="trending-up"></i> <span data-i18n="filter_quant">Quantitative & Alpha</span>
-      </button>
-      <button class="filter-btn" data-category="risk">
-        <i data-lucide="shield-check"></i> <span data-i18n="filter_risk">Risk & RegTech</span>
-      </button>
-      <button class="filter-btn" data-category="fpa">
-        <i data-lucide="bar-chart-3"></i> <span data-i18n="filter_fpa">FP&A & Management</span>
-      </button>
-    </div>
-
-    <!-- Featured Post -->
-    <div class="featured-card">
+    <!-- Featured Flagship Paper -->
+    <div class="featured-card" data-cat="accounting">
       <div class="featured-content">
         <div>
           <div class="featured-tag-row">
@@ -860,14 +875,41 @@
       </div>
     </div>
 
-    <!-- Articles Grid Section -->
-    <div class="section-header" id="articles">
-      <h2 class="section-title">
-        <i data-lucide="book-open"></i>
-        <span data-i18n="section_all_articles">All Research Papers & Articles</span>
-      </h2>
-      <span style="font-size: 0.88rem; color: var(--text-muted);" data-i18n="section_tracking">Continuously tracking next-gen financial AI</span>
-    </div>
+    <!-- Articles Grid Section with Interactive Category Filter -->
+    <section id="articles" style="scroll-margin-top: 90px;">
+      <div class="section-header">
+        <h2 class="section-title">
+          <i data-lucide="book-open"></i>
+          <span data-i18n="section_all_articles">All Research Papers & Articles</span>
+        </h2>
+        <span style="font-size: 0.88rem; color: var(--text-muted);" data-i18n="section_tracking">Continuously tracking next-gen financial AI</span>
+      </div>
+
+      <!-- Filter Controls & Real-Time Counter -->
+      <div class="filter-controls-wrapper">
+        <div class="filter-bar">
+          <button class="filter-btn active" data-category="all">
+            <i data-lucide="layers"></i> <span data-i18n="filter_all">All Domains</span>
+          </button>
+          <button class="filter-btn" data-category="accounting">
+            <i data-lucide="receipt"></i> <span data-i18n="filter_accounting">Accounting & Auditing</span>
+          </button>
+          <button class="filter-btn" data-category="quant">
+            <i data-lucide="trending-up"></i> <span data-i18n="filter_quant">Quantitative & Alpha</span>
+          </button>
+          <button class="filter-btn" data-category="risk">
+            <i data-lucide="shield-check"></i> <span data-i18n="filter_risk">Risk & RegTech</span>
+          </button>
+          <button class="filter-btn" data-category="fpa">
+            <i data-lucide="bar-chart-3"></i> <span data-i18n="filter_fpa">FP&A & Management</span>
+          </button>
+        </div>
+
+        <div class="filter-count-badge" id="filter-count-badge">
+          <i data-lucide="filter" style="width: 13px; height: 13px;"></i>
+          <span id="filter-status-text">Showing All 4 Research Papers</span>
+        </div>
+      </div>
 
     <div class="article-grid" id="article-grid">
 
@@ -1260,6 +1302,11 @@
         }
       });
       lucide.createIcons();
+
+      // Refresh filter badge text in the active language
+      if (typeof updateFilterDisplay === 'function') {
+        updateFilterDisplay(currentCategory);
+      }
     }
 
     // Toggle button handler
@@ -1276,25 +1323,64 @@
       alert(i18n[currentLang].alert_upcoming);
     }
 
-    // Category Filter Handler
+    // Robust Category Filter Handler with Real-Time Feedback
     const filterBtns = document.querySelectorAll('.filter-btn');
     const cards = document.querySelectorAll('.article-card');
+    const statusTextEl = document.getElementById('filter-status-text');
+    let currentCategory = 'all';
+
+    function updateFilterDisplay(cat) {
+      currentCategory = cat;
+      filterBtns.forEach(b => {
+        if (b.getAttribute('data-category') === cat) {
+          b.classList.add('active');
+        } else {
+          b.classList.remove('active');
+        }
+      });
+
+      let matchCount = 0;
+      cards.forEach(card => {
+        const cardCat = card.getAttribute('data-cat');
+        if (cat === 'all' || cardCat === cat) {
+          card.style.display = 'flex';
+          matchCount++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      // Update count badge
+      if (statusTextEl) {
+        const catLabels = {
+          all: currentLang === 'en' ? 'All Domains' : '全部专题',
+          accounting: currentLang === 'en' ? 'Accounting & Auditing' : '会计与审计',
+          quant: currentLang === 'en' ? 'Quantitative & Alpha' : '量化投研',
+          risk: currentLang === 'en' ? 'Risk & RegTech' : '智能风控',
+          fpa: currentLang === 'en' ? 'FP&A & Management' : '管理会计'
+        };
+        const label = catLabels[cat] || cat;
+        if (cat === 'all') {
+          statusTextEl.innerText = currentLang === 'en'
+            ? `Showing All ${matchCount} Research Papers`
+            : `显示全部 ${matchCount} 篇研究专篇`;
+        } else {
+          statusTextEl.innerText = currentLang === 'en'
+            ? `Showing ${matchCount} Paper in ${label}`
+            : `当前筛选: ${label} (${matchCount} 篇)`;
+        }
+      }
+    }
 
     filterBtns.forEach(btn => {
-      btn.addEventListener('click', () => {
-        filterBtns.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-
-        const cat = btn.getAttribute('data-category');
-        cards.forEach(card => {
-          if (cat === 'all' || card.getAttribute('data-cat') === cat) {
-            card.style.display = 'flex';
-          } else {
-            card.style.display = 'none';
-          }
-        });
+      btn.addEventListener('click', (e) => {
+        const cat = e.currentTarget.getAttribute('data-category');
+        updateFilterDisplay(cat);
       });
     });
+
+    // Initialize Filter Display
+    updateFilterDisplay('all');
   </script>
 </body>
 </html>
