@@ -33,7 +33,7 @@ This platform and its articles provide first-class **Bilingual (English default,
 | Status | Domain | Paper / Article Title | Web Version | Markdown | Code Prototype |
 | :---: | :---: | :--- | :---: | :---: | :---: |
 | 🟢 **Published** | **Accounting & Auditing** | **From Rule-Based Automation to Autonomous Orchestration: AI Agents in Accounting** | [Read Paper](https://shunchaozhou.github.io/Finance-AI/articles/ai-agent-in-accounting.html) | [`EN`](articles/ai_agent_in_accounting_en.md) / [`ZH`](articles/ai_agent_in_accounting.md) | [`multi_agent_accounting_demo.py`](examples/multi_agent_accounting_demo.py) |
-| 🟡 *In Progress* | **Quantitative Research** | *Multi-Agent Equity Research: From Unstructured Earnings Calls to Alpha Factor Mining* | *Upcoming* | *Drafting* | *Planned* |
+| 🟢 **Published** | **Quantitative & Equity Research** | **Autonomous Financial Analysts: How LLM Agents Transform News Intelligence and Equity Research Reports** | [Read Paper](https://shunchaozhou.github.io/Finance-AI/articles/llm-agent-in-equity-research.html) | [`EN`](articles/llm_agent_in_equity_research_en.md) / [`ZH`](articles/llm_agent_in_equity_research.md) | [`news_to_equity_research_agent_demo.py`](examples/news_to_equity_research_agent_demo.py) |
 | 🟡 *In Progress* | **Dynamic Risk & RegTech** | *Graph-RAG & LLM Agents in Related-Party Transactions and Anti-Money Laundering* | *Upcoming* | *Drafting* | *Planned* |
 | 🟡 *In Progress* | **Autonomous FP&A** | *Self-Driving FP&A: Dynamic Enterprise Budgeting & Monte Carlo Cash Flow Stress Testing* | *Upcoming* | *Drafting* | *Planned* |
 
@@ -69,26 +69,35 @@ This platform and its articles provide first-class **Bilingual (English default,
 
 ```text
 Finance-AI/
-├── index.html                             # Portal homepage with domain filter & roadmap (EN default / ZH toggle)
-├── .github/workflows/deploy-pages.yml     # GitHub Pages CI/CD workflow
+├── index.html                                 # Portal homepage with domain filter & roadmap (EN default / ZH toggle)
+├── .github/workflows/deploy-pages.yml         # GitHub Pages CI/CD workflow
 ├── articles/
-│   ├── ai-agent-in-accounting.html        # Interactive bilingual article page
-│   ├── ai_agent_in_accounting_en.md       # English Markdown article source
-│   └── ai_agent_in_accounting.md          # Chinese Markdown article source
+│   ├── ai-agent-in-accounting.html            # Interactive bilingual accounting paper page
+│   ├── ai_agent_in_accounting_en.md           # English Markdown accounting source
+│   ├── ai_agent_in_accounting.md              # Chinese Markdown accounting source
+│   ├── llm-agent-in-equity-research.html      # Interactive bilingual equity research paper page
+│   ├── llm_agent_in_equity_research_en.md     # English Markdown equity research source
+│   └── llm_agent_in_equity_research.md        # Chinese Markdown equity research source
 ├── examples/
-│   └── multi_agent_accounting_demo.py     # Executable Multi-Agent pipeline prototype
-├── LICENSE                                # MIT License
-└── README.md                              # Project overview and matrix index
+│   ├── multi_agent_accounting_demo.py         # Autonomous accounting & reconciliation pipeline
+│   └── news_to_equity_research_agent_demo.py  # Autonomous news analysis & equity research pod
+├── LICENSE                                    # MIT License
+└── README.md                                  # Project overview and matrix index
 ```
 
 ---
 
 ## 🚀 Quickstart & Local Reproduction
 
-### 1. Run the Multi-Agent Simulation
-The prototype requires only standard Python (3.8+) without heavy external dependencies:
+### 1. Run the Multi-Agent Financial Simulations
+The prototypes require only standard Python (3.8+) without heavy external dependencies:
+
 ```bash
+# 1. Run the Autonomous Accounting & Reconciliation Pipeline
 python3 examples/multi_agent_accounting_demo.py
+
+# 2. Run the Autonomous Equity Research Pod (News -> Audit -> Bull/Bear Debate -> Report)
+python3 examples/news_to_equity_research_agent_demo.py
 ```
 This demonstrates compliance verification, purchase order three-way matching, double-entry voucher synthesis, and mathematical debit-credit balance guardrail assertions.
 

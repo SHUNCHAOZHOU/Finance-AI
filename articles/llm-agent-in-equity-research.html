@@ -1,0 +1,1610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Autonomous Financial Analysts: How LLM Agents Transform Financial News Intelligence and Equity Research Reports | Finance-AI</title>
+  
+  <!-- SEO & Social Meta -->
+  <meta name="description" content="How autonomous LLM Multi-Agent Systems parse real-time financial news, verify facts against corporate balance sheets, conduct Bull-vs-Bear adversarial debate, and synthesize institutional equity research reports.">
+  <meta name="author" content="SHUNCHAOZHOU">
+  <meta property="og:title" content="Autonomous Financial Analysts: LLM Agents in News Intelligence & Equity Research">
+  <meta property="og:description" content="From headline noise to actionable alpha: how Multi-Agent Systems reinvent institutional buy-side research.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://shunchaozhou.github.io/Finance-AI/articles/llm-agent-in-equity-research.html">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800&family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
+  
+  <!-- KaTeX for math formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+
+  <!-- Prism.js for code highlight -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-python.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-json.min.js"></script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    :root {
+      --bg-primary: #0a0f1d;
+      --bg-surface: #111827;
+      --bg-surface-elevated: #1e293b;
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --border-color: #1e293b;
+      --accent: #38bdf8;
+      --accent-hover: #0284c7;
+      --accent-gradient: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
+      --emerald: #10b981;
+      --amber: #f59e0b;
+      --rose: #f43f5e;
+      --purple: #a855f7;
+      --font-body: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+      --font-mono: 'Fira Code', Menlo, Monaco, Consolas, monospace;
+    }
+
+    [data-theme="light"] {
+      --bg-primary: #f8fafc;
+      --bg-surface: #ffffff;
+      --bg-surface-elevated: #f1f5f9;
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --text-muted: #94a3b8;
+      --border-color: #e2e8f0;
+      --accent: #0284c7;
+      --accent-hover: #0369a1;
+      --accent-gradient: linear-gradient(135deg, #0284c7 0%, #6366f1 100%);
+      --emerald: #059669;
+      --amber: #d97706;
+      --rose: #e11d48;
+      --purple: #7c3aed;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      transition: background-color 0.2s ease, border-color 0.2s ease, color 0.15s ease;
+    }
+
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      line-height: 1.85;
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    #progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: var(--accent-gradient);
+      width: 0%;
+      z-index: 1000;
+      transition: width 0.1s linear;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      background-color: rgba(10, 15, 29, 0.88);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border-color);
+      z-index: 900;
+      padding: 0.85rem 2rem;
+    }
+
+    [data-theme="light"] header {
+      background-color: rgba(248, 250, 252, 0.88);
+    }
+
+    .nav-container {
+      max-width: 1360px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: var(--text-primary);
+      font-weight: 700;
+      font-size: 1.05rem;
+    }
+
+    .brand-logo-icon {
+      background: var(--accent-gradient);
+      color: white;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+    }
+
+    .icon-btn, .lang-toggle-btn {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+      height: 38px;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      text-decoration: none;
+      font-size: 0.84rem;
+      font-weight: 600;
+    }
+
+    .icon-btn {
+      width: 38px;
+    }
+
+    .lang-toggle-btn {
+      padding: 0 0.85rem;
+      gap: 0.45rem;
+    }
+
+    .icon-btn:hover, .lang-toggle-btn:hover {
+      background: var(--bg-surface-elevated);
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .layout-wrapper {
+      max-width: 1360px;
+      margin: 2.5rem auto;
+      padding: 0 1.5rem;
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr);
+      gap: 3.5rem;
+      position: relative;
+    }
+
+    aside {
+      position: sticky;
+      top: 5.5rem;
+      height: calc(100vh - 7rem);
+      overflow-y: auto;
+      padding-right: 0.85rem;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border-color) transparent;
+    }
+
+    aside::-webkit-scrollbar {
+      width: 4px;
+    }
+    aside::-webkit-scrollbar-thumb {
+      background: var(--border-color);
+      border-radius: 2px;
+    }
+
+    .toc-title {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      font-weight: 700;
+      margin-bottom: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .toc-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+    }
+
+    .toc-list a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.88rem;
+      display: block;
+      padding: 0.45rem 0.7rem;
+      border-radius: 6px;
+      border-left: 2px solid transparent;
+      line-height: 1.45;
+    }
+
+    .toc-list a:hover {
+      color: var(--accent);
+      background: var(--bg-surface);
+    }
+
+    .toc-list a.active {
+      color: var(--accent);
+      background: var(--bg-surface);
+      border-left-color: var(--accent);
+      font-weight: 600;
+    }
+
+    article {
+      max-width: 860px;
+    }
+
+    .post-header {
+      margin-bottom: 3.5rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .post-meta-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .meta-tag {
+      font-size: 0.78rem;
+      padding: 0.25rem 0.65rem;
+      border-radius: 20px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    .meta-tag.purple {
+      color: var(--purple);
+      background: rgba(168, 85, 247, 0.1);
+    }
+
+    .post-title {
+      font-size: 2.35rem;
+      line-height: 1.32;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      margin-bottom: 1.25rem;
+      background: var(--accent-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .post-meta-row {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      flex-wrap: wrap;
+    }
+
+    .meta-item {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+    }
+
+    .meta-item a {
+      color: inherit;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .meta-item a:hover {
+      color: var(--accent);
+    }
+
+    .post-content h2 {
+      font-size: 1.65rem;
+      font-weight: 700;
+      margin-top: 3.5rem;
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.6rem;
+      border-bottom: 1px solid var(--border-color);
+      letter-spacing: -0.01em;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      color: var(--text-primary);
+    }
+
+    .post-content h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-top: 2.25rem;
+      margin-bottom: 0.85rem;
+      color: var(--text-primary);
+    }
+
+    .post-content p {
+      margin-bottom: 1.45rem;
+      color: var(--text-secondary);
+      text-align: justify;
+      line-height: 1.85;
+    }
+
+    .post-content strong {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    .post-content ul, .post-content ol {
+      margin-bottom: 1.5rem;
+      padding-left: 1.6rem;
+      color: var(--text-secondary);
+    }
+
+    .post-content li {
+      margin-bottom: 0.55rem;
+      line-height: 1.75;
+    }
+
+    .callout {
+      background: var(--bg-surface);
+      border-left: 4px solid var(--accent);
+      border-radius: 0 12px 12px 0;
+      padding: 1.4rem 1.6rem;
+      margin: 2rem 0;
+      font-size: 0.98rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .callout-title {
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 0.6rem;
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      font-size: 1.05rem;
+    }
+
+    .flow-timeline {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin: 2.2rem 0;
+    }
+
+    .timeline-node {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 1.15rem 1rem;
+      text-align: center;
+    }
+
+    .timeline-node.highlight {
+      border-color: var(--accent);
+      background: rgba(56, 189, 248, 0.08);
+    }
+
+    .node-phase {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 0.25rem;
+    }
+
+    .node-title {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 0.35rem;
+    }
+
+    .node-desc {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+
+    .arch-container {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 1.85rem;
+      margin: 2.2rem 0;
+    }
+
+    .arch-header {
+      text-align: center;
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-color);
+      padding: 0.75rem;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--accent);
+      margin-bottom: 1.5rem;
+    }
+
+    .arch-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .arch-card {
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 1.15rem;
+    }
+
+    .arch-card-title {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+    }
+
+    .arch-card ul {
+      list-style: none;
+      padding-left: 0;
+      margin-bottom: 0;
+    }
+
+    .arch-card li {
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      margin-bottom: 0.45rem;
+      line-height: 1.45;
+    }
+
+    .arch-footer {
+      text-align: center;
+      background: rgba(168, 85, 247, 0.1);
+      border: 1px solid rgba(168, 85, 247, 0.3);
+      padding: 0.75rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.88rem;
+      color: var(--purple);
+    }
+
+    .table-container {
+      overflow-x: auto;
+      margin: 2.2rem 0;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      background: var(--bg-surface);
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.1);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+      text-align: left;
+    }
+
+    th {
+      background: var(--bg-surface-elevated);
+      color: var(--text-primary);
+      font-weight: 600;
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--border-color);
+      white-space: nowrap;
+    }
+
+    td {
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    .code-block-wrapper {
+      position: relative;
+      margin: 2.2rem 0;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    }
+
+    .code-block-header {
+      background: #111827;
+      padding: 0.65rem 1.2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: #9ca3af;
+      border-bottom: 1px solid #1f2937;
+    }
+
+    .copy-btn {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #e5e7eb;
+      padding: 0.25rem 0.65rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .copy-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    pre[class*="language-"] {
+      margin: 0 !important;
+      border-radius: 0 !important;
+      font-size: 0.88rem !important;
+      padding: 1.35rem !important;
+      background: #090d16 !important;
+      line-height: 1.65;
+    }
+
+    .interactive-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 2rem;
+      margin: 2.5rem 0;
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.18);
+    }
+
+    .interactive-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border-color);
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .interactive-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      color: var(--text-primary);
+    }
+
+    .demo-pipeline {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.85rem;
+      margin: 1.5rem 0;
+    }
+
+    .pipeline-step {
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 1.1rem 0.85rem;
+      text-align: center;
+    }
+
+    .pipeline-step.active {
+      border-color: var(--accent);
+      background: rgba(56, 189, 248, 0.12);
+    }
+
+    .step-number {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 0.35rem;
+    }
+
+    .step-name {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .step-status {
+      font-size: 0.72rem;
+      margin-top: 0.4rem;
+      color: var(--text-muted);
+    }
+
+    .run-demo-btn {
+      background: var(--accent-gradient);
+      color: white;
+      border: none;
+      padding: 0.7rem 1.4rem;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.95rem;
+      box-shadow: 0 4px 14px rgba(56, 189, 248, 0.3);
+    }
+
+    .run-demo-btn:hover {
+      opacity: 0.92;
+      transform: translateY(-1px);
+    }
+
+    .demo-output-box {
+      background: #090d16;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 1.35rem;
+      margin-top: 1.35rem;
+      font-family: var(--font-mono);
+      font-size: 0.84rem;
+      color: #e2e8f0;
+      max-height: 300px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      line-height: 1.6;
+    }
+
+    footer {
+      border-top: 1px solid var(--border-color);
+      padding: 3.5rem 1.5rem;
+      background: var(--bg-surface);
+      margin-top: 5rem;
+      text-align: center;
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin: 1.25rem 0;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .footer-links a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 1024px) {
+      .layout-wrapper {
+        grid-template-columns: 1fr;
+      }
+      aside {
+        display: none;
+      }
+      .arch-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .demo-pipeline {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 640px) {
+      .post-title {
+        font-size: 1.85rem;
+      }
+      .flow-timeline {
+        grid-template-columns: 1fr;
+      }
+      .arch-grid {
+        grid-template-columns: 1fr;
+      }
+      .demo-pipeline {
+        grid-template-columns: 1fr;
+      }
+      header {
+        padding: 0.75rem 1rem;
+      }
+    }
+  </style>
+</head>
+<body data-theme="dark">
+
+  <div id="progress-bar"></div>
+
+  <!-- Header -->
+  <header>
+    <div class="nav-container">
+      <a href="../index.html" class="brand">
+        <div class="brand-logo-icon">
+          <i data-lucide="arrow-left"></i>
+        </div>
+        <span id="nav-back-text">Finance-AI Hub</span>
+      </a>
+
+      <div class="nav-actions">
+        <!-- Language Switcher -->
+        <button id="lang-toggle-btn" class="lang-toggle-btn" title="Switch Language / 切换语言">
+          <i data-lucide="globe"></i>
+          <span id="lang-indicator">中文</span>
+        </button>
+
+        <a href="https://www.linkedin.com/in/shunchao-zhou-aab272324/" class="icon-btn" target="_blank" rel="noopener" title="LinkedIn Profile">
+          <i data-lucide="linkedin"></i>
+        </a>
+        <a href="../index.html" class="icon-btn" title="Home Portal">
+          <i data-lucide="home"></i>
+        </a>
+        <a href="https://github.com/SHUNCHAOZHOU/Finance-AI" class="icon-btn" target="_blank" rel="noopener" title="GitHub">
+          <i data-lucide="github"></i>
+        </a>
+        <button id="theme-toggle" class="icon-btn" title="Toggle Theme">
+          <i data-lucide="sun" id="theme-icon"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Layout Wrapper -->
+  <div class="layout-wrapper">
+    
+    <!-- Left Navigation Table of Contents -->
+    <aside>
+      <div class="toc-title">
+        <i data-lucide="list"></i>
+        <span id="toc-header">Table of Contents</span>
+      </div>
+      <ul class="toc-list" id="toc-list">
+        <li><a href="#crisis">1. Information Overload & Traditional NLP</a></li>
+        <li><a href="#leap">2. The LLM Agent Leap</a></li>
+        <li><a href="#architecture">3. Virtual Research Desk Architecture</a></li>
+        <li><a href="#methodology">4. Four Core Methodologies</a></li>
+        <li><a href="#guardrails">5. Preventing Hallucinated Alpha</a></li>
+        <li><a href="#live-demo">✨ Interactive Pod Demo</a></li>
+        <li><a href="#conclusion">6. The Future of Buy-Side Desks</a></li>
+      </ul>
+    </aside>
+
+    <!-- Main Article Body -->
+    <article>
+      <div class="post-header">
+        <div class="post-meta-badges">
+          <span class="meta-tag">AI Agent</span>
+          <span class="meta-tag purple">Equity Research</span>
+          <span class="meta-tag">Multi-Agent Debate</span>
+          <span class="meta-tag">Alpha Generation</span>
+          <span class="meta-tag">Causal Reasoning</span>
+        </div>
+
+        <h1 class="post-title" id="article-title">
+          Autonomous Financial Analysts: How LLM Agents Transform Financial News Intelligence and Equity Research Reports
+        </h1>
+
+        <div class="post-meta-row">
+          <div class="meta-item">
+            <i data-lucide="user"></i>
+            <a href="https://www.linkedin.com/in/shunchao-zhou-aab272324/" target="_blank" rel="noopener">SHUNCHAOZHOU</a>
+          </div>
+          <div class="meta-item">
+            <i data-lucide="calendar"></i>
+            <span>2026</span>
+          </div>
+          <div class="meta-item">
+            <i data-lucide="clock"></i>
+            <span id="meta-read-time">~14 min read</span>
+          </div>
+          <div class="meta-item">
+            <i data-lucide="git-branch"></i>
+            <a href="https://github.com/SHUNCHAOZHOU/Finance-AI" target="_blank" rel="noopener">Finance-AI</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- English Content Container -->
+      <div id="content-en" class="post-content">
+        
+        <section id="abstract-en">
+          <div class="callout">
+            <div class="callout-title">
+              <i data-lucide="sparkles"></i>
+              <span>Executive Summary</span>
+            </div>
+            <p style="margin-bottom: 0;">
+              Every trading day, global markets generate over 2.5 million financial articles, disclosures, and earnings call transcripts. Yet portfolio managers remain bottlenecked: <strong>an abundance of financial noise, paired with an acute scarcity of verified, actionable alpha</strong>.
+              Traditional NLP models (such as FinBERT) reduce text to isolated polarity scores, missing disguised profit warnings and failing to cross-validate claims with balance sheet fundamentals.
+              By orchestrating <strong>heterogeneous event extraction, fundamental triangulation, Bull-vs-Bear adversarial debate, and automated financial modeling</strong>, autonomous LLM Agents are revolutionizing institutional equity research.
+            </p>
+          </div>
+        </section>
+
+        <section id="crisis">
+          <h2>1. The Crisis of Financial Information Overload & Traditional NLP Failure</h2>
+          <p>Quantitative and fundamental desks have long struggled to convert unstructured market commentary into reliable alpha factors:</p>
+
+          <div class="flow-timeline">
+            <div class="timeline-node">
+              <div class="node-phase">1.0 · 2010s</div>
+              <div class="node-title">Dictionary Sentiment</div>
+              <div class="node-desc">Loughran-McDonald wordlists & keyword frequency counts</div>
+            </div>
+            <div class="timeline-node">
+              <div class="node-phase">2.0 · 2019s</div>
+              <div class="node-title">Neural FinBERT</div>
+              <div class="node-desc">Sentence-level classification without context or reasoning</div>
+            </div>
+            <div class="timeline-node highlight">
+              <div class="node-phase">3.0 · 2025s+</div>
+              <div class="node-title">Multi-Agent Systems</div>
+              <div class="node-desc">Causal event graph, cross-auditing & adversarial debate</div>
+            </div>
+          </div>
+
+          <h3>Why Traditional NLP Models Fail:</h3>
+          <ul>
+            <li><strong>Isolated Sentence Pitfalls</strong>: A headline *"Company reports 35% revenue growth"* is classified as bullish by standard classifiers, even when consensus was 50% and accounts receivable rose 120%.</li>
+            <li><strong>Obfuscated Management Rhetoric</strong>: Words like *"optimizing our headcount structure"* conceal layoffs and operational deterioration.</li>
+            <li><strong>No Fundamental Grounding</strong>: Traditional NLP operates in a vacuum, unable to query financial databases to confirm whether a company can fund its announced initiatives.</li>
+          </ul>
+        </section>
+
+        <section id="leap">
+          <h2>2. From Static Sentiment to Autonomous Reasoning: The LLM Agent Leap</h2>
+          <p>An equity research agent is an active investigator equipped with goal planning, dynamic tool calling, multi-step memory, and deterministic math guardrails:</p>
+
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Evaluation Dimension</th>
+                  <th>Traditional NLP (FinBERT)</th>
+                  <th>Monolithic LLM (ChatGPT/Claude)</th>
+                  <th>Institutional Research Agent Pod</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Analysis Depth</strong></td>
+                  <td>Sentence score (-1.0 to +1.0)</td>
+                  <td>Generic textual summary</td>
+                  <td><strong>Causal graph extraction & 10-Q fundamental triangulation</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>Bias Control</strong></td>
+                  <td>Highly sensitive to wordings</td>
+                  <td>Prone to agreeable user bias</td>
+                  <td><strong>Adversarial Bull vs Bear Multi-Agent Debate</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>Tool Integration</strong></td>
+                  <td>None</td>
+                  <td>Web search or basic sandbox</td>
+                  <td><strong>Queries FactSet/EDGAR APIs, computes DCF models</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>Hallucination Risk</strong></td>
+                  <td>N/A (Classification only)</td>
+                  <td>High (fabricates metrics/dates)</td>
+                  <td><strong>Zero-tolerance: exact code evaluation with footnote pointers</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>Final Deliverable</strong></td>
+                  <td>Numeric float score</td>
+                  <td>Chat response</td>
+                  <td><strong>Institutional research note with rating & price target corridor</strong></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="architecture">
+          <h2>3. System Architecture: The Multi-Agent Virtual Research Desk</h2>
+          <p>Production institutional architectures mirror a Wall Street research pod with specialized agents:</p>
+
+          <div class="arch-container">
+            <div class="arch-header">
+              <i data-lucide="cpu" style="display: inline; vertical-align: middle; width: 18px;"></i>
+              Virtual Research Desk: Autonomous Multi-Agent Hierarchy
+            </div>
+
+            <div class="arch-grid">
+              <div class="arch-card">
+                <div class="arch-card-title">
+                  <i data-lucide="newspaper" style="color: var(--accent); width: 16px;"></i>
+                  <span>Event Ingestion</span>
+                </div>
+                <ul>
+                  <li>• Noise filtering & deduplication</li>
+                  <li>• Entity & ticker recognition</li>
+                  <li>• Management claim extraction</li>
+                  <li>• Semantic event taxonomy</li>
+                </ul>
+              </div>
+
+              <div class="arch-card">
+                <div class="arch-card-title">
+                  <i data-lucide="check-square" style="color: var(--emerald); width: 16px;"></i>
+                  <span>Fundamental Audit</span>
+                </div>
+                <ul>
+                  <li>• Cross-checks 10-K / 10-Q filings</li>
+                  <li>• Liquidity & cash burn validation</li>
+                  <li>• Historical gross margin trend</li>
+                  <li>• Balance sheet health checks</li>
+                </ul>
+              </div>
+
+              <div class="arch-card">
+                <div class="arch-card-title">
+                  <i data-lucide="swords" style="color: var(--rose); width: 16px;"></i>
+                  <span>Bull vs Bear Pod</span>
+                </div>
+                <ul>
+                  <li>• Bull: TAM expansion, moat, catalysts</li>
+                  <li>• Bear: Margin decay, customer churn</li>
+                  <li>• Multi-round dialectic rebuttals</li>
+                  <li>• Evidence weighting & stress test</li>
+                </ul>
+              </div>
+
+              <div class="arch-card">
+                <div class="arch-card-title">
+                  <i data-lucide="award" style="color: var(--purple); width: 16px;"></i>
+                  <span>CIO Strategy Core</span>
+                </div>
+                <ul>
+                  <li>• Arbitrates debate evidence</li>
+                  <li>• Computes deterministic price target</li>
+                  <li>• Assigns Buy/Hold/Sell rating</li>
+                  <li>• Outputs grounded research note</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="arch-footer">
+              <i data-lucide="shield-check" style="display: inline; vertical-align: middle; width: 16px;"></i>
+              Zero-Tolerance Grounding: Deterministic Valuation Formulas & Source Verification
+            </div>
+          </div>
+        </section>
+
+        <section id="methodology">
+          <h2>4. Four Core Methodological Breakthroughs</h2>
+          <h3>4.1 Causal Event Graph Extraction</h3>
+          <p>When unexpected news hits (e.g., regulatory inquiries into a market leader), the agent traces causal transmission to free cash flows rather than producing a simple negative score:</p>
+          
+          <div class="callout">
+            <div class="callout-title">
+              <i data-lucide="git-commit"></i>
+              <span>Causal Transmission Vector</span>
+            </div>
+            <p style="margin-bottom: 0;">
+              $$\text{Regulatory Scrutiny} \longrightarrow \text{Delay in Acquisition Closing} \longrightarrow \text{Synergy Postponement to FY27} \longrightarrow \Delta \text{FCF} \downarrow 6.5\%$$
+            </p>
+          </div>
+
+          <h3>4.2 Cross-Modal Triangulation: Reconciling Narrative Claims with Hard Ledger Data</h3>
+          <p>The Fundamental Auditor Agent cross-checks claims against balance sheets. If an executive claims *"we have an extraordinarily resilient cash runway,"* but the filing indicates 8 months of liquidity at current burn rate, the agent flags an impending dilutive equity offering.</p>
+
+          <h3>4.3 Adversarial Multi-Agent Debate</h3>
+          <p>Dialectic tension between Bull and Bear analysts breaks confirmation bias. The Bull analyzes secular catalysts; the Bear scrutinizes customer concentration and margin compression. Both agents must cite documented data points to score rebuttal points.</p>
+
+          <h3>4.4 Automated Institutional Report Synthesis</h3>
+          <p>The CIO Agent integrates evidence weights, calculates target price corridors, and formats standard sell-side/buy-side research notes with explicit invalidation triggers.</p>
+        </section>
+
+        <section id="guardrails">
+          <h2>5. Engineering Implementation: Preventing Hallucinated Alpha</h2>
+          <p>Two engineering constraints are strictly enforced:</p>
+          <ul>
+            <li><strong>Deterministic Valuation Computations</strong>: Multiples (P/E, EV/EBITDA, DCF WACC) are evaluated using Python decimal math—never token generation.</li>
+            <li><strong>Auditable Footnote Traces</strong>: Every number in the report points to raw news paragraphs or filing page coordinates.</li>
+          </ul>
+
+          <div class="code-block-wrapper">
+            <div class="code-block-header">
+              <span>equity_research_note_sample.json</span>
+              <button class="copy-btn" onclick="copyCode(this)"><i data-lucide="copy"></i> Copy</button>
+            </div>
+            <pre><code class="language-json">{
+  "ticker": "NVDA",
+  "investment_rating": "BUY",
+  "target_price": 165.00,
+  "confidence_score": 0.88,
+  "debate_summary": {
+    "bull_thesis": "Accelerated generational compute transition with expanding pricing power.",
+    "bear_thesis": "Hyperscaler custom ASIC substitution threatens terminal multiple.",
+    "cio_arbitration": "ASIC threat is medium-term; near-term Blackwell lead justifies premium."
+  },
+  "grounded_sources": [
+    {"claim": "Data center revenue rose 112% YoY", "source": "10-Q Q3 2025, Page 24"},
+    {"claim": "Hyperscaler Capex revised upward by $12B", "source": "Bloomberg News 2026-03-15"}
+  ]
+}</code></pre>
+          </div>
+        </section>
+
+        <section id="live-demo">
+          <h2>✨ Interactive Multi-Agent Research Pod Simulation</h2>
+          <p>Observe the Multi-Agent Research Pod ingest market news, audit quarterly metrics, simulate Bull-vs-Bear debate, and compute an institutional price target:</p>
+
+          <div class="interactive-card">
+            <div class="interactive-header">
+              <div class="interactive-title">
+                <i data-lucide="play-circle" style="color: var(--accent);"></i>
+                <span>Autonomous Equity Research Pod Execution</span>
+              </div>
+              <button class="run-demo-btn" id="run-pod-btn-en">
+                <i data-lucide="play"></i>
+                <span>Run Pod Analysis</span>
+              </button>
+            </div>
+
+            <div class="demo-pipeline">
+              <div class="pipeline-step" id="pstep-1-en">
+                <div class="step-number">Agent 01</div>
+                <div class="step-name">News Extraction</div>
+                <div class="step-status" id="pstep-1-status-en">Idle</div>
+              </div>
+              <div class="pipeline-step" id="pstep-2-en">
+                <div class="step-number">Agent 02</div>
+                <div class="step-name">10-Q Audit</div>
+                <div class="step-status" id="pstep-2-status-en">Idle</div>
+              </div>
+              <div class="pipeline-step" id="pstep-3-en">
+                <div class="step-number">Agent 03 & 04</div>
+                <div class="step-name">Bull vs Bear Debate</div>
+                <div class="step-status" id="pstep-3-status-en">Idle</div>
+              </div>
+              <div class="pipeline-step" id="pstep-4-en">
+                <div class="step-number">Agent 05</div>
+                <div class="step-name">CIO Target Synthesis</div>
+                <div class="step-status" id="pstep-4-status-en">Idle</div>
+              </div>
+            </div>
+
+            <div class="demo-output-box" id="demo-output-en">Click [Run Pod Analysis] above to observe real-time agent debate and research report synthesis...</div>
+          </div>
+        </section>
+
+        <section id="conclusion">
+          <h2>6. Conclusion: The Future of the Autonomous Buy-Side Desk</h2>
+          <p>
+            The role of the professional analyst is not eliminated—it is elevated.
+            Human portfolio managers transform from manual model update clerks into <strong>Chief Curators</strong>, directing synthetic research teams that scan markets, cross-verify claims, and surface non-consensus alpha around the clock.
+          </p>
+        </section>
+
+      </div>
+
+      <!-- Chinese Content Container -->
+      <div id="content-zh" class="post-content" style="display: none;">
+        
+        <section id="abstract-zh">
+          <div class="callout">
+            <div class="callout-title">
+              <i data-lucide="sparkles"></i>
+              <span>摘要 (Executive Summary)</span>
+            </div>
+            <p style="margin-bottom: 0;">
+              全球资本市场每天产生超过 250 万篇财经新闻与监管公告。现代投资机构面临严峻的现实矛盾：<strong>非结构化噪音泛滥成灾，而经核验、具备非共识超额收益（Alpha）的深度情报却极度稀缺</strong>。
+              传统金融 NLP 模型只做孤立情感打分，难以识破财务掩饰辞令，更脱离财报底层数据。
+              依托<strong>因果事件图谱、财报跨模态核验、多空对抗辩论（Adversarial Debate）与确定性估值建模</strong>，LLM 多智能体系统（MAS）正在重构机构级投资研究的生产力边界。
+            </p>
+          </div>
+        </section>
+
+        <section id="crisis-zh">
+          <h2>一、行业困境：传统金融 NLP 为何难以赋能专业投资决策？</h2>
+          <p>长久以来，量化对冲基金与买方投研一直在探索非结构化文本的价值转化，但技术始终受困于几个核心瓶颈：</p>
+
+          <div class="flow-timeline">
+            <div class="timeline-node">
+              <div class="node-phase">1.0 · 2010s</div>
+              <div class="node-title">词袋与词典时代</div>
+              <div class="node-desc">基于 Loughran-McDonald 词表的机械统计打分</div>
+            </div>
+            <div class="timeline-node">
+              <div class="node-phase">2.0 · 2019s</div>
+              <div class="node-title">FinBERT 分类</div>
+              <div class="node-desc">脱离基本面上下文的单句孤立情感标注</div>
+            </div>
+            <div class="timeline-node highlight">
+              <div class="node-phase">3.0 · 2025s+</div>
+              <div class="node-title">多智能体投研舱</div>
+              <div class="node-desc">因果链推导、财报跨模态审计与多空对抗辩论</div>
+            </div>
+          </div>
+
+          <h3>传统金融文本分析的三大死穴：</h3>
+          <ul>
+            <li><strong>孤立句式断章取义</strong>：快讯报道“公司营收同比增长 35%”，传统模型给出买入建议，然而若买方此前预期为 50%，且应收账款暴增 120%，实为严重利空。</li>
+            <li><strong>财务暗语与公关修辞</strong>：“优化组织架构以聚焦核心战略”实质上是断臂求生与裁员。</li>
+            <li><strong>与财务基本面硬脱钩</strong>：纯文本模型无法主动查阅资产负债表与现金流，无法识别资本金是否足够支撑其宣布的研发项目。</li>
+          </ul>
+        </section>
+
+        <section id="leap-zh">
+          <h2>二、范式跃迁：从“静态文本分类”到“主动式投研 Agent”</h2>
+          <p>投研 Agent 不再是被动文本生成器，而是拥有投资目标、能够主动执行搜集、质疑、辩论与复核的数字分析师：</p>
+
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>评估维度</th>
+                  <th>传统 NLP (FinBERT)</th>
+                  <th>单轮 LLM 问答 (ChatGPT/Claude)</th>
+                  <th>机构级投研 AI Agent 系统</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>分析深度</strong></td>
+                  <td>句级打分 (-1.0 至 +1.0)</td>
+                  <td>通用文字摘要</td>
+                  <td><strong>因果事件图谱、财报跨模态核验、敏感度分析</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>偏误控制</strong></td>
+                  <td>极易受关键词汇误导</td>
+                  <td>易顺从用户的提问倾向</td>
+                  <td><strong>内置多空多智能体辩论（Adversarial Debate）</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>工具调用能力</strong></td>
+                  <td>无</td>
+                  <td>仅支持简单联网或解释代码</td>
+                  <td><strong>无缝调取 FactSet/Wind 数据库、自动编排 DCF 模型</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>幻觉管控</strong></td>
+                  <td>不涉及生成</td>
+                  <td>较高（可能胡编财务数字与日期）</td>
+                  <td><strong>确定性代码护栏 + 100% 来源溯源引用</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>最终交付物</strong></td>
+                  <td>简单数字标签</td>
+                  <td>Markdown 对话段落</td>
+                  <td><strong>标准机构研报（投资逻辑、催化剂、风险、估值评级）</strong></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="architecture-zh">
+          <h2>三、系统架构：多智能体虚拟投研室（Virtual Research Desk）</h2>
+          <p>生产级机构架构借鉴华尔街投研团队的多角色分工，部署协同作战的多智能体集群：</p>
+
+          <div class="arch-container">
+            <div class="arch-header">
+              <i data-lucide="cpu" style="display: inline; vertical-align: middle; width: 18px;"></i>
+              虚拟投研室：多智能体层级架构
+            </div>
+
+            <div class="arch-grid">
+              <div class="arch-card">
+                <div class="arch-card-title">
+                  <i data-lucide="newspaper" style="color: var(--accent); width: 16px;"></i>
+                  <span>资讯事件抽取</span>
+                </div>
+                <ul>
+                  <li>• 全网新闻清洗与去噪排重</li>
+                  <li>• 证券代码与主体对齐</li>
+                  <li>• 管理层指引与主张抽取</li>
+                  <li>• 金融事件本体分类</li>
+                </ul>
+              </div>
+
+              <div class="arch-card">
+                <div class="arch-card-title">
+                  <i data-lucide="check-square" style="color: var(--emerald); width: 16px;"></i>
+                  <span>财报真实性核验</span>
+                </div>
+                <ul>
+                  <li>• 穿透最新 10-K / 季报数据</li>
+                  <li>• 流动性与资金消耗率测算</li>
+                  <li>• 历史毛利率连续性验证</li>
+                  <li>• 偿债能力与资产质量检验</li>
+                </ul>
+              </div>
+
+              <div class="arch-card">
+                <div class="arch-card-title">
+                  <i data-lucide="swords" style="color: var(--rose); width: 16px;"></i>
+                  <span>多空辩论对决舱</span>
+                </div>
+                <ul>
+                  <li>• 多头分析师：增长空间与壁垒</li>
+                  <li>• 空头分析师：估值承压与竞争</li>
+                  <li>• 强制多轮辩驳与数据质证</li>
+                  <li>• 论据置信度加权评分</li>
+                </ul>
+              </div>
+
+              <div class="arch-card">
+                <div class="arch-card-title">
+                  <i data-lucide="award" style="color: var(--purple); width: 16px;"></i>
+                  <span>首席投资官决策</span>
+                </div>
+                <ul>
+                  <li>• 仲裁多空辩论焦点与证据</li>
+                  <li>• 确定性估值模型测算目标价</li>
+                  <li>• 审定买入/持有/卖出评级</li>
+                  <li>• 输出带溯源的专业研报</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="arch-footer">
+              <i data-lucide="shield-check" style="display: inline; vertical-align: middle; width: 16px;"></i>
+              零容错底线：确定性数学计算与全流程信源穿透标注
+            </div>
+          </div>
+        </section>
+
+        <section id="methodology-zh">
+          <h2>四、四大核心方法论突破</h2>
+          <h3>4.1 金融事件因果图谱提取</h3>
+          <p>当突发消息发生时，Agent 不只是打标签，而是构建定性事件与自由现金流（FCF）折现模型之间的传导因果链：</p>
+          
+          <div class="callout">
+            <div class="callout-title">
+              <i data-lucide="git-commit"></i>
+              <span>因果链推导路径</span>
+            </div>
+            <p style="margin-bottom: 0;">
+              $$\text{监管调查启动} \longrightarrow \text{战略并购审批延后} \longrightarrow \text{协同效应推迟至 2027 财年} \longrightarrow \Delta \text{自由现金流 (FCF)} \downarrow 6.5\%$$
+            </p>
+          </div>
+
+          <h3>4.2 跨模态财务真实性穿透</h3>
+          <p>管理层宣称“在手现金非常充裕”，但审计智能体调取财报计算发现现金储备仅够支撑 8 个月研发，立即提示高额配股稀释风险。</p>
+
+          <h3>4.3 多空智能体对抗辩论机制</h3>
+          <p>多头分析师挖掘 TAM 增长与新架构领先；空头分析师严密审视大客户集中度与自研芯片替代风险。双方出示量化数据进行逻辑收敛。</p>
+
+          <h3>4.4 溯源可审计的机构级投研报告自动生成</h3>
+          <p>首席投资官综合论据权重，通过确定性公式计算加权目标价，输出符合合规标准的投资研究报告。</p>
+        </section>
+
+        <section id="guardrails-zh">
+          <h2>五、工程落地防线：如何杜绝“虚构的 Alpha 幻觉”？</h2>
+          <p>坚决守住两条工程红线：</p>
+          <ul>
+            <li><strong>确定性估值代码执行</strong>：P/E、EV/EBITDA、目标价测算全部交由 Python 定点数库运行，严禁模型自行生成运算结果。</li>
+            <li><strong>全流程溯源脚注标记</strong>：研报中的每一项数据均携带可回溯的段落或表格索引指针。</li>
+          </ul>
+
+          <div class="code-block-wrapper">
+            <div class="code-block-header">
+              <span>equity_research_note_sample.json</span>
+              <button class="copy-btn" onclick="copyCode(this)"><i data-lucide="copy"></i> 复制</button>
+            </div>
+            <pre><code class="language-json">{
+  "ticker": "NVDA",
+  "investment_rating": "BUY",
+  "target_price": 165.00,
+  "confidence_score": 0.88,
+  "debate_summary": {
+    "bull_thesis": "数据中心算力需求供不应求，软件及系统级毛利率持续扩张。",
+    "bear_thesis": "头部云厂商自研 ASIC 芯片进展加快，存在终局增长率受损风险。",
+    "cio_arbitration": "ASIC 替代属于中长期威胁（3年以上），短期 Blackwell 架构代差优势确保了定价权。"
+  },
+  "grounded_sources": [
+    {"claim": "数据中心收入同比增长 112%", "source": "2025Q3 季报第 24 页"},
+    {"claim": "超大规模云服务商资本开支追加 120 亿美元", "source": "彭博社 2026-03-15 新闻快讯"}
+  ]
+}</code></pre>
+          </div>
+        </section>
+
+        <section id="live-demo-zh">
+          <h2>✨ 在线交互多智能体投研舱演示</h2>
+          <p>观察多智能体投研舱如何清洗新闻、穿透财报、展开多空辩论并最终生成目标价：</p>
+
+          <div class="interactive-card">
+            <div class="interactive-header">
+              <div class="interactive-title">
+                <i data-lucide="play-circle" style="color: var(--accent);"></i>
+                <span>多智能体自主投研推演实录</span>
+              </div>
+              <button class="run-demo-btn" id="run-pod-btn-zh">
+                <i data-lucide="play"></i>
+                <span>运行投研舱</span>
+              </button>
+            </div>
+
+            <div class="demo-pipeline">
+              <div class="pipeline-step" id="pstep-1-zh">
+                <div class="step-number">Agent 01</div>
+                <div class="step-name">事件抽取</div>
+                <div class="step-status" id="pstep-1-status-zh">待命</div>
+              </div>
+              <div class="pipeline-step" id="pstep-2-zh">
+                <div class="step-number">Agent 02</div>
+                <div class="step-name">财报穿透</div>
+                <div class="step-status" id="pstep-2-status-zh">待命</div>
+              </div>
+              <div class="pipeline-step" id="pstep-3-zh">
+                <div class="step-number">Agent 03 & 04</div>
+                <div class="step-name">多空辩论</div>
+                <div class="step-status" id="pstep-3-status-zh">待命</div>
+              </div>
+              <div class="pipeline-step" id="pstep-4-zh">
+                <div class="step-number">Agent 05</div>
+                <div class="step-name">研报定稿</div>
+                <div class="step-status" id="pstep-4-status-zh">待命</div>
+              </div>
+            </div>
+
+            <div class="demo-output-box" id="demo-output-zh">点击上方【运行投研舱】按钮，查看多智能体对抗辩论与研报生成实录...</div>
+          </div>
+        </section>
+
+        <section id="conclusion-zh">
+          <h2>六、总结与展望：迈向 7×24 小时自主买方投研新纪元</h2>
+          <p>
+            AI Agent 的加入并非消灭专业分析师，而是赋予基金经理超级杠杆。
+            人类投资总监将化身为<strong>“投研指挥官”</strong>，统筹协调由智能体构成的 7×24 小时全天候投研舱，以无与伦比的广度与严谨度穿透市场杂音，捕获真正的长期超额收益。
+          </p>
+        </section>
+
+      </div>
+    </article>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2026 <a href="https://www.linkedin.com/in/shunchao-zhou-aab272324/" target="_blank" rel="noopener" style="color: inherit; text-decoration: underline;">SHUNCHAOZHOU</a>. All Rights Reserved. Based on MIT License.</p>
+    <div class="footer-links">
+      <a href="../index.html">Finance-AI Hub</a>
+      <a href="https://www.linkedin.com/in/shunchao-zhou-aab272324/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://github.com/SHUNCHAOZHOU/Finance-AI" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://github.com/SHUNCHAOZHOU/Finance-AI/tree/main/examples" target="_blank" rel="noopener">Python Prototype</a>
+    </div>
+  </footer>
+
+  <script>
+    lucide.createIcons();
+
+    // Theme Switcher
+    const themeBtn = document.getElementById('theme-toggle');
+    const themeIcon = document.getElementById('theme-icon');
+    const body = document.body;
+
+    themeBtn.addEventListener('click', () => {
+      const currentTheme = body.getAttribute('data-theme');
+      const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      body.setAttribute('data-theme', nextTheme);
+      themeIcon.setAttribute('data-lucide', nextTheme === 'dark' ? 'sun' : 'moon');
+      lucide.createIcons();
+    });
+
+    // Language State & Switching
+    let currentLang = localStorage.getItem('finance_ai_lang') || 'en';
+
+    const langData = {
+      en: {
+        indicator: "中文",
+        navBack: "Finance-AI Hub",
+        tocHeader: "Table of Contents",
+        metaReadTime: "~14 min read",
+        title: "Autonomous Financial Analysts: How LLM Agents Transform Financial News Intelligence and Equity Research Reports",
+        toc: [
+          { href: "#crisis", text: "1. Information Overload & Legacy NLP" },
+          { href: "#leap", text: "2. The LLM Agent Leap" },
+          { href: "#architecture", text: "3. Virtual Research Desk Architecture" },
+          { href: "#methodology", text: "4. Four Core Methodologies" },
+          { href: "#guardrails", text: "5. Preventing Hallucinated Alpha" },
+          { href: "#live-demo", text: "✨ Interactive Pod Demo" },
+          { href: "#conclusion", text: "6. The Future of Buy-Side Desks" }
+        ]
+      },
+      zh: {
+        indicator: "English",
+        navBack: "Finance-AI 知识库主页",
+        tocHeader: "目录导航",
+        metaReadTime: "约 14 分钟阅读",
+        title: "自主投研分析师：LLM Agent 如何重构金融新闻情绪穿透与专业研报生成",
+        toc: [
+          { href: "#crisis-zh", text: "一、行业困境与传统 NLP 局限" },
+          { href: "#leap-zh", text: "二、范式跃迁：主动式投研 Agent" },
+          { href: "#architecture-zh", text: "三、虚拟投研室系统架构" },
+          { href: "#methodology-zh", text: "四、四大核心方法论突破" },
+          { href: "#guardrails-zh", text: "五、工程落地：杜绝幻觉" },
+          { href: "#live-demo-zh", text: "✨ 在线交互投研舱演示" },
+          { href: "#conclusion-zh", text: "六、总结与买方投研展望" }
+        ]
+      }
+    };
+
+    function switchLanguage(lang) {
+      currentLang = lang;
+      localStorage.setItem('finance_ai_lang', lang);
+      document.documentElement.lang = lang;
+
+      const info = langData[lang];
+      document.getElementById('lang-indicator').innerText = info.indicator;
+      document.getElementById('nav-back-text').innerText = info.navBack;
+      document.getElementById('toc-header').innerText = info.tocHeader;
+      document.getElementById('meta-read-time').innerText = info.metaReadTime;
+      document.getElementById('article-title').innerText = info.title;
+
+      const tocList = document.getElementById('toc-list');
+      tocList.innerHTML = info.toc.map(item => `<li><a href="${item.href}">${item.text}</a></li>`).join('');
+
+      if (lang === 'en') {
+        document.getElementById('content-en').style.display = 'block';
+        document.getElementById('content-zh').style.display = 'none';
+      } else {
+        document.getElementById('content-en').style.display = 'none';
+        document.getElementById('content-zh').style.display = 'block';
+      }
+
+      if (window.renderMathInElement) {
+        renderMathInElement(document.body, {
+          delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '\\[', right: '\\]', display: true},
+            {left: '\\(', right: '\\)', display: false},
+            {left: '$', right: '$', display: false}
+          ],
+          throwOnError: false
+        });
+      }
+
+      lucide.createIcons();
+    }
+
+    document.getElementById('lang-toggle-btn').addEventListener('click', () => {
+      switchLanguage(currentLang === 'en' ? 'zh' : 'en');
+    });
+
+    function copyCode(btn) {
+      const pre = btn.closest('.code-block-wrapper').querySelector('pre');
+      navigator.clipboard.writeText(pre.innerText).then(() => {
+        const originalText = btn.innerHTML;
+        btn.innerHTML = currentLang === 'en' ? 'Copied!' : '已复制!';
+        setTimeout(() => {
+          btn.innerHTML = originalText;
+        }, 2000);
+      });
+    }
+
+    window.addEventListener('scroll', () => {
+      const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      document.getElementById('progress-bar').style.width = scrolled + '%';
+
+      const activeContentId = currentLang === 'en' ? 'content-en' : 'content-zh';
+      const sections = document.getElementById(activeContentId).querySelectorAll('section[id]');
+      let currentSectionId = '';
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop - 140;
+        if (winScroll >= sectionTop) {
+          currentSectionId = section.getAttribute('id');
+        }
+      });
+
+      document.querySelectorAll('.toc-list a').forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === `#${currentSectionId}`) {
+          link.classList.add('active');
+        }
+      });
+    });
+
+    // Interactive Demo Pipeline Runner for Equity Research Pod
+    function setupResearchPipeline(btnId, outputId, stepPrefix, isEn) {
+      const runBtn = document.getElementById(btnId);
+      const outputBox = document.getElementById(outputId);
+      if (!runBtn) return;
+
+      const steps = [
+        { id: `${stepPrefix}1`, status: `${stepPrefix}1-status`, text: isEn ? 'Extracting Events...' : '正在抽取事件...', finish: isEn ? '✓ 3 Key Claims Extracted' : '✓ 提取到 3 项核心事件' },
+        { id: `${stepPrefix}2`, status: `${stepPrefix}2-status`, text: isEn ? 'Auditing 10-Q Metrics...' : '正在穿透季度财报...', finish: isEn ? '✓ Margins & Cash Verified' : '✓ 毛利率与现金流已验证' },
+        { id: `${stepPrefix}3`, status: `${stepPrefix}3-status`, text: isEn ? 'Bull vs Bear Debate...' : '多空智能体对抗辩论...', finish: isEn ? '✓ 2 Debate Rounds Converged' : '✓ 2 轮辩论论据收敛' },
+        { id: `${stepPrefix}4`, status: `${stepPrefix}4-status`, text: isEn ? 'CIO Arbitrating...' : 'CIO 研报最终定稿...', finish: isEn ? '✓ Target: $145.31 (Hold/Buy)' : '✓ 目标价: $145.31 (中性/买入)' }
+      ];
+
+      runBtn.addEventListener('click', async () => {
+        runBtn.disabled = true;
+        runBtn.style.opacity = '0.6';
+        
+        outputBox.innerText = isEn 
+          ? "[Research Director] Spawning Multi-Agent Equity Research Pod for Ticker: NVDA...\nInput: Blackwell Ultra hyperscaler orders & EMEA regulatory inquiries.\n"
+          : "[投研总监] 正在为标的 NVDA 启动多智能体虚拟投研舱...\n输入信源: Blackwell Ultra 超算订单激增与欧洲监管调查快讯。\n";
+
+        steps.forEach(s => {
+          const el = document.getElementById(s.id + (isEn ? '-en' : '-zh'));
+          const st = document.getElementById(s.status + (isEn ? '-en' : '-zh'));
+          if (el) el.classList.remove('active');
+          if (st) {
+            st.innerText = isEn ? 'Idle' : '待命';
+            st.style.color = 'var(--text-muted)';
+          }
+        });
+
+        for (let i = 0; i < steps.length; i++) {
+          const s = steps[i];
+          const stepEl = document.getElementById(s.id + (isEn ? '-en' : '-zh'));
+          const statusEl = document.getElementById(s.status + (isEn ? '-en' : '-zh'));
+
+          if (stepEl) stepEl.classList.add('active');
+          if (statusEl) {
+            statusEl.innerText = s.text;
+            statusEl.style.color = 'var(--accent)';
+          }
+
+          await new Promise(r => setTimeout(r, 700));
+
+          if (statusEl) {
+            statusEl.innerText = s.finish;
+            statusEl.style.color = 'var(--emerald)';
+          }
+
+          if (i === 0) {
+            outputBox.innerText += isEn
+              ? "\n[EventExtractor] Parsed claims: (1) Hyperscaler capex +28% YoY; (2) Gross margins >74%; (3) EMEA distribution antitrust probe."
+              : "\n[事件抽取智能体] 提取到3项主张: (1) 头部云厂商资本开支增28%; (2) 毛利率维持在74%以上; (3) 欧洲渠道反垄断初查。";
+          } else if (i === 1) {
+            outputBox.innerText += isEn
+              ? "\n[FundamentalAuditor] Querying 10-Q database: 3-quarter average gross margin = 75.0% (VERIFIED); Net Cash = $34.8B (SOLID BUFFER)."
+              : "\n[财报核验智能体] 调取最新财报: 近三季平均毛利率 75.0% (与管理层指引吻合); 在手净现金 348 亿美元 (具备强偿债缓冲)。";
+          } else if (i === 2) {
+            outputBox.innerText += isEn
+              ? "\n[BullAnalyst] Argument: CUDA software lock-in + Blackwell platform transition ensures enterprise pricing power.\n[BearAnalyst] Counter: Top 4 hyperscalers represent 42% revenue; customer in-house ASIC substitution threatens terminal multiple."
+              : "\n[多头分析师] 论据: CUDA 软件生态壁垒叠加 Blackwell 代差，企业端推理计算具备定价弹性。\n[空头分析师] 反驳: 前4大客户营收占比达 42%，自研定制芯片（TPU/Trainium）威胁长期终局估值乘数。";
+          } else if (i === 3) {
+            outputBox.innerText += isEn
+              ? "\n[CIODirector] Deterministic Valuation: Bull $170.04 (65% weight) + Bear $99.39 (35% weight) = $145.31 (Upside: +13.1%).\n\n🎉 Final Rating: NEUTRAL / OVERWEIGHT BIAS. Institutional note drafted with full citation index."
+              : "\n[首席投资官] 确定性数学估值: 多头目标 $170.04 (65%权重) + 空头底线 $99.39 (35%权重) = 加权目标价 $145.31 (上涨空间: +13.1%)。\n\n🎉 投资评级: 中性偏多 (NEUTRAL/BUY)。已输出携带完整信源索引的机构研报。";
+          }
+          outputBox.scrollTop = outputBox.scrollHeight;
+        }
+
+        runBtn.disabled = false;
+        runBtn.style.opacity = '1';
+      });
+    }
+
+    setupResearchPipeline('run-pod-btn-en', 'demo-output-en', 'pstep-', true);
+    setupResearchPipeline('run-pod-btn-zh', 'demo-output-zh', 'pstep-', false);
+
+    switchLanguage(currentLang);
+  </script>
+</body>
+</html>
