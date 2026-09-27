@@ -23,6 +23,25 @@
 
   <style>
     :root {
+      --bg-primary: #f8fafc;
+      --bg-surface: #ffffff;
+      --bg-surface-elevated: #f1f5f9;
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --text-muted: #94a3b8;
+      --border-color: #e2e8f0;
+      --accent: #0284c7;
+      --accent-hover: #0369a1;
+      --accent-gradient: linear-gradient(135deg, #0284c7 0%, #4f46e5 100%);
+      --emerald: #059669;
+      --amber: #d97706;
+      --purple: #7c3aed;
+      --rose: #e11d48;
+      --font-body: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+      --font-mono: 'Fira Code', Menlo, Monaco, Consolas, monospace;
+    }
+
+    [data-theme="dark"] {
       --bg-primary: #0a0f1d;
       --bg-surface: #111827;
       --bg-surface-elevated: #1e293b;
@@ -37,25 +56,6 @@
       --amber: #f59e0b;
       --purple: #a855f7;
       --rose: #f43f5e;
-      --font-body: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
-      --font-mono: 'Fira Code', Menlo, Monaco, Consolas, monospace;
-    }
-
-    [data-theme="light"] {
-      --bg-primary: #f8fafc;
-      --bg-surface: #ffffff;
-      --bg-surface-elevated: #f1f5f9;
-      --text-primary: #0f172a;
-      --text-secondary: #475569;
-      --text-muted: #94a3b8;
-      --border-color: #e2e8f0;
-      --accent: #0284c7;
-      --accent-hover: #0369a1;
-      --accent-gradient: linear-gradient(135deg, #0284c7 0%, #6366f1 100%);
-      --emerald: #059669;
-      --amber: #d97706;
-      --purple: #7c3aed;
-      --rose: #e11d48;
     }
 
     * {
@@ -79,7 +79,7 @@
     header {
       position: sticky;
       top: 0;
-      background-color: rgba(10, 15, 29, 0.88);
+      background-color: rgba(248, 250, 252, 0.92);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
       border-bottom: 1px solid var(--border-color);
@@ -87,8 +87,8 @@
       padding: 0.85rem 2rem;
     }
 
-    [data-theme="light"] header {
-      background-color: rgba(248, 250, 252, 0.88);
+    [data-theme="dark"] header {
+      background-color: rgba(10, 15, 29, 0.88);
     }
 
     .nav-container {
@@ -702,7 +702,7 @@
     }
   </style>
 </head>
-<body data-theme="dark">
+<body data-theme="light">
 
   <!-- Header -->
   <header>
@@ -1078,18 +1078,25 @@
     // Initialize Lucide Icons
     lucide.createIcons();
 
-    // Theme Switcher
+    // Theme Management (Default Light)
     const themeBtn = document.getElementById('theme-toggle');
     const themeIcon = document.getElementById('theme-icon');
-    const body = document.body;
+
+    let currentTheme = localStorage.getItem('finance_ai_theme') || 'light';
+
+    function applyTheme(theme) {
+      currentTheme = theme;
+      localStorage.setItem('finance_ai_theme', theme);
+      document.body.setAttribute('data-theme', theme);
+      themeIcon.setAttribute('data-lucide', theme === 'light' ? 'moon' : 'sun');
+      lucide.createIcons();
+    }
 
     themeBtn.addEventListener('click', () => {
-      const currentTheme = body.getAttribute('data-theme');
-      const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
-      body.setAttribute('data-theme', nextTheme);
-      themeIcon.setAttribute('data-lucide', nextTheme === 'dark' ? 'sun' : 'moon');
-      lucide.createIcons();
+      applyTheme(currentTheme === 'light' ? 'dark' : 'light');
     });
+
+    applyTheme(currentTheme);
 
     // Bilingual Dictionary (English default, Chinese optional)
     const i18n = {
