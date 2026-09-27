@@ -9,12 +9,30 @@
 
 > 本项目专注于探讨与实践 **AI Agent（人工智能体）技术在现代财务与会计行业中的工程落地与体系重构**。仓库包含深度行业洞察博客、系统架构设计以及最小可行性多智能体协同（MAS）原型代码。
 
+🌐 **在线博客网页**：[https://shunchaozhou.github.io/Finance-AI/](https://shunchaozhou.github.io/Finance-AI/)  
+*(包含响应式优雅排版、目录滚动高亮、数学公式渲染、暗黑/明亮主题切换及在线交互原型)*
+
+---
+
+## 🚀 在线网页与 GitHub Pages 部署
+
+本项目已预置开箱即用的静态网页 `index.html` 与自动部署工作流 `.github/workflows/deploy-pages.yml`：
+
+- **一键访问**：启用 GitHub Pages 后直接访问 [https://shunchaozhou.github.io/Finance-AI/](https://shunchaozhou.github.io/Finance-AI/)
+- **若需手动启用**：
+  1. 进入当前 GitHub 仓库设置：**Settings** &rarr; **Pages**
+  2. 在 **Build and deployment** 下的 **Source** 选择：
+     - **GitHub Actions**（推荐，推送即触发自动构建发布）
+     - 或选择 **Deploy from a branch** &rarr; 分支选择 `main`，目录选择 `/ (root)`，点击 **Save** 即可。
+
 ---
 
 ## 📚 目录结构
 
 ```text
 Finance-AI/
+├── index.html                             # 现代化交互式在线博客单页 (GitHub Pages)
+├── .github/workflows/deploy-pages.yml     # GitHub Pages 自动部署工作流
 ├── README.md                              # 仓库主页与完整博客展示
 ├── articles/
 │   └── ai_agent_in_accounting.md          # 博客专篇（Markdown格式，支持多端排版发布）
