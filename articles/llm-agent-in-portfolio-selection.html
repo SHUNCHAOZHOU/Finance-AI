@@ -1,0 +1,1526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Autonomous Portfolio Management: How LLM Multi-Agent Systems Revolutionize Systematic Stock Picking & Dynamic Asset Allocation | Finance-AI</title>
+  
+  <!-- SEO & Social Meta -->
+  <meta name="description" content="An end-to-end architectural and mathematical blueprint: how LLM Multi-Agent Systems interface with the Black-Litterman model and convex quadratic solvers for institutional stock picking and dynamic asset allocation.">
+  <meta name="author" content="SHUNCHAOZHOU">
+  <meta property="og:title" content="Autonomous Portfolio Management: LLM Multi-Agent Systems in Systematic Stock Picking">
+  <meta property="og:description" content="Bridging cognitive AI multi-agent views with Bayesian Modern Portfolio Theory for institutional asset allocation.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://shunchaozhou.github.io/Finance-AI/articles/llm-agent-in-portfolio-selection.html">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800&family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
+  
+  <!-- KaTeX for math formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+
+  <!-- Prism.js for code highlight -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-python.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-json.min.js"></script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    :root {
+      --bg-primary: #f8fafc;
+      --bg-surface: #ffffff;
+      --bg-surface-elevated: #f1f5f9;
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --text-muted: #94a3b8;
+      --border-color: #e2e8f0;
+      --accent: #0284c7;
+      --accent-hover: #0369a1;
+      --accent-gradient: linear-gradient(135deg, #0284c7 0%, #4f46e5 100%);
+      --emerald: #059669;
+      --amber: #d97706;
+      --purple: #7c3aed;
+      --rose: #e11d48;
+      --font-body: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+      --font-mono: 'Fira Code', Menlo, Monaco, Consolas, monospace;
+    }
+
+    [data-theme="dark"] {
+      --bg-primary: #0a0f1d;
+      --bg-surface: #111827;
+      --bg-surface-elevated: #1e293b;
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --border-color: #1e293b;
+      --accent: #38bdf8;
+      --accent-hover: #0284c7;
+      --accent-gradient: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
+      --emerald: #10b981;
+      --amber: #f59e0b;
+      --purple: #a855f7;
+      --rose: #f43f5e;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      transition: background-color 0.2s ease, border-color 0.2s ease, color 0.15s ease;
+    }
+
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      line-height: 1.85;
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    #progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: var(--accent-gradient);
+      width: 0%;
+      z-index: 1000;
+      transition: width 0.1s linear;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      background-color: rgba(248, 250, 252, 0.92);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border-color);
+      z-index: 900;
+      padding: 0.85rem 2rem;
+    }
+
+    [data-theme="dark"] header {
+      background-color: rgba(10, 15, 29, 0.88);
+    }
+
+    .nav-container {
+      max-width: 1360px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: var(--text-primary);
+      font-weight: 700;
+      font-size: 1.05rem;
+    }
+
+    .brand-logo-icon {
+      background: var(--accent-gradient);
+      color: white;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+    }
+
+    .icon-btn, .lang-toggle-btn {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+      height: 38px;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      text-decoration: none;
+      font-size: 0.84rem;
+      font-weight: 600;
+    }
+
+    .icon-btn {
+      width: 38px;
+    }
+
+    .lang-toggle-btn {
+      padding: 0 0.85rem;
+      gap: 0.45rem;
+    }
+
+    .icon-btn:hover, .lang-toggle-btn:hover {
+      background: var(--bg-surface-elevated);
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .layout-wrapper {
+      max-width: 1360px;
+      margin: 2.5rem auto;
+      padding: 0 1.5rem;
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr);
+      gap: 3.5rem;
+      position: relative;
+    }
+
+    aside {
+      position: sticky;
+      top: 5.5rem;
+      height: calc(100vh - 7rem);
+      overflow-y: auto;
+      padding-right: 0.85rem;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border-color) transparent;
+    }
+
+    aside::-webkit-scrollbar {
+      width: 4px;
+    }
+    aside::-webkit-scrollbar-thumb {
+      background: var(--border-color);
+      border-radius: 2px;
+    }
+
+    .toc-title {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      font-weight: 700;
+      margin-bottom: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .toc-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+    }
+
+    .toc-list a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.88rem;
+      display: block;
+      padding: 0.45rem 0.7rem;
+      border-radius: 6px;
+      border-left: 2px solid transparent;
+      line-height: 1.45;
+    }
+
+    .toc-list a:hover {
+      color: var(--accent);
+      background: var(--bg-surface);
+    }
+
+    .toc-list a.active {
+      color: var(--accent);
+      background: var(--bg-surface);
+      border-left-color: var(--accent);
+      font-weight: 600;
+    }
+
+    article {
+      max-width: 860px;
+    }
+
+    .post-header {
+      margin-bottom: 3.5rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .post-meta-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .meta-tag {
+      font-size: 0.78rem;
+      padding: 0.25rem 0.65rem;
+      border-radius: 20px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    .meta-tag.purple {
+      color: var(--purple);
+      background: rgba(168, 85, 247, 0.1);
+    }
+
+    .post-title {
+      font-size: 2.35rem;
+      line-height: 1.32;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      margin-bottom: 1.25rem;
+      background: var(--accent-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .post-meta-row {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      flex-wrap: wrap;
+    }
+
+    .meta-item {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+    }
+
+    .meta-item a {
+      color: inherit;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .meta-item a:hover {
+      color: var(--accent);
+    }
+
+    .post-content h2 {
+      font-size: 1.65rem;
+      font-weight: 700;
+      margin-top: 3.5rem;
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.6rem;
+      border-bottom: 1px solid var(--border-color);
+      letter-spacing: -0.01em;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      color: var(--text-primary);
+    }
+
+    .post-content h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-top: 2.25rem;
+      margin-bottom: 0.85rem;
+      color: var(--text-primary);
+    }
+
+    .post-content p {
+      margin-bottom: 1.45rem;
+      color: var(--text-secondary);
+      text-align: justify;
+      line-height: 1.85;
+    }
+
+    .post-content strong {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    .post-content ul, .post-content ol {
+      margin-bottom: 1.5rem;
+      padding-left: 1.6rem;
+      color: var(--text-secondary);
+    }
+
+    .post-content li {
+      margin-bottom: 0.55rem;
+      line-height: 1.75;
+    }
+
+    .callout {
+      background: var(--bg-surface);
+      border-left: 4px solid var(--accent);
+      border-radius: 0 12px 12px 0;
+      padding: 1.4rem 1.6rem;
+      margin: 2rem 0;
+      font-size: 0.98rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    }
+
+    .callout-title {
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 0.6rem;
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      font-size: 1.05rem;
+    }
+
+    .flow-timeline {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin: 2.2rem 0;
+    }
+
+    .timeline-node {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 1.15rem 1rem;
+      text-align: center;
+    }
+
+    .timeline-node.highlight {
+      border-color: var(--accent);
+      background: rgba(2, 132, 199, 0.08);
+    }
+
+    .node-phase {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 0.25rem;
+    }
+
+    .node-title {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 0.35rem;
+    }
+
+    .node-desc {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+
+    .arch-container {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 1.85rem;
+      margin: 2.2rem 0;
+    }
+
+    .arch-header {
+      text-align: center;
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-color);
+      padding: 0.75rem;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--accent);
+      margin-bottom: 1.5rem;
+    }
+
+    .arch-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .arch-card {
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 1.15rem;
+    }
+
+    .arch-card-title {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+    }
+
+    .arch-card ul {
+      list-style: none;
+      padding-left: 0;
+      margin-bottom: 0;
+    }
+
+    .arch-card li {
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      margin-bottom: 0.45rem;
+      line-height: 1.45;
+    }
+
+    .arch-footer {
+      text-align: center;
+      background: rgba(168, 85, 247, 0.1);
+      border: 1px solid rgba(168, 85, 247, 0.3);
+      padding: 0.75rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.88rem;
+      color: var(--purple);
+    }
+
+    .formula-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin: 2rem 0;
+      text-align: center;
+    }
+
+    .formula-math {
+      font-size: 1.25rem;
+      color: var(--text-primary);
+      margin: 0.5rem 0;
+    }
+
+    .code-block-wrapper {
+      position: relative;
+      margin: 2.2rem 0;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    }
+
+    .code-block-header {
+      background: #111827;
+      padding: 0.65rem 1.2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: #9ca3af;
+      border-bottom: 1px solid #1f2937;
+    }
+
+    .copy-btn {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #e5e7eb;
+      padding: 0.25rem 0.65rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .copy-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    pre[class*="language-"] {
+      margin: 0 !important;
+      border-radius: 0 !important;
+      font-size: 0.88rem !important;
+      padding: 1.35rem !important;
+      background: #090d16 !important;
+      line-height: 1.65;
+    }
+
+    .interactive-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 2rem;
+      margin: 2.5rem 0;
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.08);
+    }
+
+    .interactive-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border-color);
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .interactive-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      color: var(--text-primary);
+    }
+
+    .demo-pipeline {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.85rem;
+      margin: 1.5rem 0;
+    }
+
+    .pipeline-step {
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 1.1rem 0.85rem;
+      text-align: center;
+    }
+
+    .pipeline-step.active {
+      border-color: var(--accent);
+      background: rgba(2, 132, 199, 0.1);
+    }
+
+    .step-number {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 0.35rem;
+    }
+
+    .step-name {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .step-status {
+      font-size: 0.72rem;
+      margin-top: 0.4rem;
+      color: var(--text-muted);
+    }
+
+    .run-demo-btn {
+      background: var(--accent-gradient);
+      color: white;
+      border: none;
+      padding: 0.7rem 1.4rem;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.95rem;
+      box-shadow: 0 4px 14px rgba(2, 132, 199, 0.25);
+    }
+
+    .run-demo-btn:hover {
+      opacity: 0.92;
+      transform: translateY(-1px);
+    }
+
+    .demo-output-box {
+      background: #090d16;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 1.35rem;
+      margin-top: 1.35rem;
+      font-family: var(--font-mono);
+      font-size: 0.84rem;
+      color: #e2e8f0;
+      max-height: 320px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      line-height: 1.6;
+    }
+
+    footer {
+      border-top: 1px solid var(--border-color);
+      padding: 3.5rem 1.5rem;
+      background: var(--bg-surface);
+      margin-top: 5rem;
+      text-align: center;
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin: 1.25rem 0;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .footer-links a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 1024px) {
+      .layout-wrapper {
+        grid-template-columns: 1fr;
+      }
+      aside {
+        display: none;
+      }
+      .arch-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .demo-pipeline {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 640px) {
+      .post-title {
+        font-size: 1.85rem;
+      }
+      .flow-timeline {
+        grid-template-columns: 1fr;
+      }
+      .arch-grid {
+        grid-template-columns: 1fr;
+      }
+      .demo-pipeline {
+        grid-template-columns: 1fr;
+      }
+      header {
+        padding: 0.75rem 1rem;
+      }
+    }
+  </style>
+</head>
+<body data-theme="light">
+
+  <div id="progress-bar"></div>
+
+  <!-- Header -->
+  <header>
+    <div class="nav-container">
+      <a href="../index.html" class="brand">
+        <div class="brand-logo-icon">
+          <i data-lucide="arrow-left"></i>
+        </div>
+        <span id="nav-back-text">Finance-AI Hub</span>
+      </a>
+
+      <div class="nav-actions">
+        <!-- Language Switcher -->
+        <button id="lang-toggle-btn" class="lang-toggle-btn" title="Switch Language / 切换语言">
+          <i data-lucide="globe"></i>
+          <span id="lang-indicator">中文</span>
+        </button>
+
+        <a href="https://www.linkedin.com/in/shunchao-zhou-aab272324/" class="icon-btn" target="_blank" rel="noopener" title="LinkedIn Profile" aria-label="LinkedIn Profile">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+          </svg>
+        </a>
+        <a href="../index.html" class="icon-btn" title="Home Portal">
+          <i data-lucide="home"></i>
+        </a>
+        <a href="https://github.com/SHUNCHAOZHOU/Finance-AI" class="icon-btn" target="_blank" rel="noopener" title="GitHub" aria-label="GitHub Repository">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+          </svg>
+        </a>
+        <button id="theme-toggle" class="icon-btn" title="Toggle Theme">
+          <i data-lucide="moon" id="theme-icon"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Layout Wrapper -->
+  <div class="layout-wrapper">
+    
+    <!-- Left Navigation Table of Contents -->
+    <aside>
+      <div class="toc-title">
+        <i data-lucide="list"></i>
+        <span id="toc-header">Table of Contents</span>
+      </div>
+      <ul class="toc-list" id="toc-list">
+        <li><a href="#crisis">1. Crisis of Traditional Quant MPT</a></li>
+        <li><a href="#bridge">2. The Black-Litterman Bridge</a></li>
+        <li><a href="#architecture">3. Virtual Portfolio Desk Architecture</a></li>
+        <li><a href="#agents">4. Four Core Agent Pods</a></li>
+        <li><a href="#guardrails">5. Engineering Guardrails</a></li>
+        <li><a href="#live-demo">✨ Interactive Allocation Demo</a></li>
+        <li><a href="#conclusion">6. The Hybrid Human-Agent Quant</a></li>
+      </ul>
+    </aside>
+
+    <!-- Main Article Body -->
+    <article>
+      <div class="post-header">
+        <div class="post-meta-badges">
+          <span class="meta-tag">AI Agent</span>
+          <span class="meta-tag purple">Portfolio Optimization</span>
+          <span class="meta-tag">Stock Picking</span>
+          <span class="meta-tag">Black-Litterman</span>
+          <span class="meta-tag">Convex Optimization</span>
+        </div>
+
+        <h1 class="post-title" id="article-title">
+          Autonomous Portfolio Management: How LLM Multi-Agent Systems Revolutionize Systematic Stock Picking & Dynamic Asset Allocation
+        </h1>
+
+        <div class="post-meta-row">
+          <div class="meta-item">
+            <i data-lucide="user"></i>
+            <a href="https://www.linkedin.com/in/shunchao-zhou-aab272324/" target="_blank" rel="noopener">SHUNCHAOZHOU</a>
+          </div>
+          <div class="meta-item">
+            <i data-lucide="calendar"></i>
+            <span>2026</span>
+          </div>
+          <div class="meta-item">
+            <i data-lucide="clock"></i>
+            <span id="meta-read-time">~15 min read</span>
+          </div>
+          <div class="meta-item">
+            <i data-lucide="git-branch"></i>
+            <a href="https://github.com/SHUNCHAOZHOU/Finance-AI" target="_blank" rel="noopener">Finance-AI</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- English Content Container -->
+      <div id="content-en" class="post-content">
+        
+        <section id="abstract-en">
+          <div class="callout">
+            <div class="callout-title">
+              <i data-lucide="sparkles"></i>
+              <span>Executive Summary</span>
+            </div>
+            <p style="margin-bottom: 0;">
+              For decades, quantitative asset allocators have struggled with <strong>linear factor crowding, estimation error amplification in mean-variance optimizers, and blindness to qualitative macro narratives</strong>.
+              Rather than blindly replacing convex optimization with black-box neural networks, state-of-the-art architectures deploy <strong>cognitive Multi-Agent Systems (MAS) as structured view generators within the Bayesian Black-Litterman framework</strong>.
+              This paper analyzes how specialized agents screen asset universes, generate probabilistic return views ($P, Q, \Omega$), and interface with deterministic quadratic solvers to deliver risk-managed capital allocation.
+            </p>
+          </div>
+        </section>
+
+        <section id="crisis">
+          <h2>1. The Crisis of Traditional Quantitative Portfolio Management</h2>
+          <p>Systematic asset allocation has evolved through three distinct eras:</p>
+
+          <div class="flow-timeline">
+            <div class="timeline-node">
+              <div class="node-phase">1.0 · 1952</div>
+              <div class="node-title">Markowitz MPT</div>
+              <div class="node-desc">Mean-variance quadratic optimization prone to error-maximization</div>
+            </div>
+            <div class="timeline-node">
+              <div class="node-phase">2.0 · 1990s</div>
+              <div class="node-title">Linear Multi-Factor</div>
+              <div class="node-desc">Barra/Fama-French factor regressions with severe crowding</div>
+            </div>
+            <div class="timeline-node highlight">
+              <div class="node-phase">3.0 · 2026</div>
+              <div class="node-title">Agentic Allocation</div>
+              <div class="node-desc">Cognitive MAS views blended with Bayesian Black-Litterman</div>
+            </div>
+          </div>
+
+          <h3>The Three Structural Bottlenecks:</h3>
+          <ul>
+            <li><strong>Factor Decay & Crowding</strong>: When linear factors (Value, Momentum) become crowded across institutional funds, alpha compresses and liquidity flash-crashes intensify.</li>
+            <li><strong>Sensitivity to Statistical Noise</strong>: Markowitz mean-variance optimization famously maximizes input errors; a 1% drift in historical return estimates produces un-investable corner portfolios.</li>
+            <li><strong>Inability to Price Qualitative Disruption</strong>: Traditional factor models cannot parse antitrust regulatory filings, sudden export controls, or corporate restructuring guidance.</li>
+          </ul>
+        </section>
+
+        <section id="bridge">
+          <h2>2. The Mathematical Bridge: Connecting LLM Agents with Black-Litterman</h2>
+          <p>
+            Amateur AI tools attempt to output raw portfolio weights directly from prompts. In institutional finance, LLM Agents are deployed as <strong>probabilistic view generators</strong> blended with market priors through the <strong>Black-Litterman Bayesian framework</strong>:
+          </p>
+
+          <div class="formula-card">
+            <div style="font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase;">Bayesian Posterior Expected Return Vector</div>
+            <div class="formula-math">
+              $$E(R) = \left[(\tau \Sigma)^{-1} + P^T \Omega^{-1} P\right]^{-1} \left[(\tau \Sigma)^{-1} \Pi + P^T \Omega^{-1} Q\right]$$
+            </div>
+          </div>
+
+          <ol>
+            <li><strong>Market Prior ($\Pi = \lambda \Sigma w_{mkt}$)</strong>: Represents benchmark equilibrium capitalization weights.</li>
+            <li><strong>Agent Views ($P, Q$)</strong>: $P$ specifies the asset links; $Q$ quantifies expected excess return derived from multi-agent research.</li>
+            <li><strong>Uncertainty Matrix ($\Omega$)</strong>: The diagonal matrix is dynamically scaled by the Agent's self-assessed confidence score:
+              $$\Omega_{k,k} = \tau (1 - \text{Confidence}_k) (P_k \Sigma P_k^T)$$
+            </li>
+            <li><strong>Deterministic Quadratic Solver</strong>: Solves $\max_w w^T E(R) - \frac{\gamma}{2} w^T \Sigma w$ under strict real-world turnover constraints.</li>
+          </ol>
+        </section>
+
+        <section id="architecture">
+          <h2>3. System Architecture: The Autonomous Portfolio Desk</h2>
+          <p>A resilient systematic desk isolates macro, quality screening, risk budgeting, and execution concerns:</p>
+
+          <div class="arch-container">
+            <div class="arch-header">
+              <i data-lucide="cpu" style="display: inline; vertical-align: middle; width: 18px;"></i>
+              Autonomous Portfolio Management Hierarchy (MAS)
+            </div>
+
+            <div class="arch-grid">
+              <div class="arch-card">
+                <div class="arch-card-title">
+                  <i data-lucide="compass" style="color: var(--accent); width: 16px;"></i>
+                  <span>Macro Regime</span>
+                </div>
+                <ul>
+                  <li>• Yield curve inversion tracking</li>
+                  <li>• Central bank policy bias</li>
+                  <li>• Sector rotation mandates</li>
+                  <li>• Global liquidity signals</li>
+                </ul>
+              </div>
+
+              <div class="arch-card">
+                <div class="arch-card-title">
+                  <i data-lucide="filter" style="color: var(--emerald); width: 16px;"></i>
+                  <span>Quality Screener</span>
+                </div>
+                <ul>
+                  <li>• ROIC > WACC hurdles</li>
+                  <li>• Free Cash Flow conversion</li>
+                  <li>• Net Debt / EBITDA safety</li>
+                  <li>• Economic moat analysis</li>
+                </ul>
+              </div>
+
+              <div class="arch-card">
+                <div class="arch-card-title">
+                  <i data-lucide="shield" style="color: var(--rose); width: 16px;"></i>
+                  <span>Risk Budgeting</span>
+                </div>
+                <ul>
+                  <li>• Ledoit-Wolf covariance shrinkage</li>
+                  <li>• Extreme tail VaR/CVaR limits</li>
+                  <li>• Drawdown circuit breakers</li>
+                  <li>• Correlation regime clustering</li>
+                </ul>
+              </div>
+
+              <div class="arch-card">
+                <div class="arch-card-title">
+                  <i data-lucide="refresh-cw" style="color: var(--purple); width: 16px;"></i>
+                  <span>Convex Solver</span>
+                </div>
+                <ul>
+                  <li>• Black-Litterman posterior</li>
+                  <li>• Quadratic programming (CVXPY)</li>
+                  <li>• Turnover friction deduction</li>
+                  <li>• Concentration constraints</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="arch-footer">
+              <i data-lucide="check-circle" style="display: inline; vertical-align: middle; width: 16px;"></i>
+              Deterministic Allocation Execution: \(\sum w_i \equiv 1.00, \quad 0 \le w_i \le 25\%\)
+            </div>
+          </div>
+        </section>
+
+        <section id="agents">
+          <h2>4. Four Core Agent Pods Analyzed</h2>
+          <h3>4.1 Macro Regime & Thematic Strategy Agent</h3>
+          <p>Identifies whether capital markets are in Expansion, Stagflation, Contraction, or Recovery, tilting asset classes towards defensive or growth factors.</p>
+
+          <h3>4.2 Multi-Dimensional Fundamental & Quality Screener Agent</h3>
+          <p>Screens thousands of tickers to eliminate value traps and insolvent balance sheets, enforcing strict return on invested capital ($\text{ROIC} > 12\%$) and debt service metrics.</p>
+
+          <h3>4.3 Risk Budgeting & Dynamic Covariance Agent</h3>
+          <p>Employs Ledoit-Wolf regularized covariance matrices to mitigate sample noise and calculates marginal contributions to risk (MCR) to avoid hidden risk clustering.</p>
+
+          <h3>4.4 Trade Rebalancing & Transaction Friction Optimizer Agent</h3>
+          <p>Ensures that proposed alpha trades compensate for bid-ask spreads, market impact, and capital gains taxes before generating trade execution tickets.</p>
+        </section>
+
+        <section id="guardrails">
+          <h2>5. Engineering Guardrails: Preventing Catastrophic Rebalancing</h2>
+          <p>Strict non-negotiable risk limits protect institutional capital:</p>
+          <ul>
+            <li><strong>Hard Concentration Limit</strong>: Single stock weight $\le 25\%$; single sector $\le 35\%$.</li>
+            <li><strong>Turnover Budget</strong>: Maximum daily turnover capped at $5\%$ to minimize brokerage slippage.</li>
+            <li><strong>Drawdown Circuit Breakers</strong>: If rolling 10-day volatility breaches $20\%$, the Risk Agent forces a $30\%$ de-risking rotation into short-term cash equivalents.</li>
+          </ul>
+
+          <div class="code-block-wrapper">
+            <div class="code-block-header">
+              <span>black_litterman_rebalance_ticket.json</span>
+              <button class="copy-btn" onclick="copyCode(this)"><i data-lucide="copy"></i> Copy</button>
+            </div>
+            <pre><code class="language-json">{
+  "portfolio_weights": {
+    "NVDA": 0.2580,
+    "MSFT": 0.2580,
+    "AAPL": 0.1733,
+    "LLY":  0.1807,
+    "XOM":  0.1299
+  },
+  "expected_annual_return": "13.39%",
+  "portfolio_volatility": "16.50%",
+  "expected_sharpe_ratio": 0.56,
+  "optimization_engine": "Black-Litterman Bayesian + Quadratic Solver",
+  "guardrail_status": "PASSED (Sum == 100%, Max Weight <= 25.8%)"
+}</code></pre>
+          </div>
+        </section>
+
+        <section id="live-demo">
+          <h2>✨ Interactive Multi-Agent Portfolio Allocation Simulation</h2>
+          <p>Experience the multi-agent allocation pod diagnose macro cycles, screen asset universes, formulate views, and compute optimal Black-Litterman weights:</p>
+
+          <div class="interactive-card">
+            <div class="interactive-header">
+              <div class="interactive-title">
+                <i data-lucide="play-circle" style="color: var(--accent);"></i>
+                <span>Autonomous Asset Allocation & Optimization Pod</span>
+              </div>
+              <button class="run-demo-btn" id="run-port-btn-en">
+                <i data-lucide="play"></i>
+                <span>Run Portfolio Pod</span>
+              </button>
+            </div>
+
+            <div class="demo-pipeline">
+              <div class="pipeline-step" id="opt-step-1-en">
+                <div class="step-number">Agent 01</div>
+                <div class="step-name">Macro Regime</div>
+                <div class="step-status" id="opt-step-1-status-en">Idle</div>
+              </div>
+              <div class="pipeline-step" id="opt-step-2-en">
+                <div class="step-number">Agent 02</div>
+                <div class="step-name">Quality Screener</div>
+                <div class="step-status" id="opt-step-2-status-en">Idle</div>
+              </div>
+              <div class="pipeline-step" id="opt-step-3-en">
+                <div class="step-number">Agent 03</div>
+                <div class="step-name">View Matrix (P, Q, Ω)</div>
+                <div class="step-status" id="opt-step-3-status-en">Idle</div>
+              </div>
+              <div class="pipeline-step" id="opt-step-4-en">
+                <div class="step-number">Agent 04 & 05</div>
+                <div class="step-name">Black-Litterman Weights</div>
+                <div class="step-status" id="opt-step-4-status-en">Idle</div>
+              </div>
+            </div>
+
+            <div class="demo-output-box" id="demo-output-en">Click [Run Portfolio Pod] above to observe multi-agent asset allocation in action...</div>
+          </div>
+        </section>
+
+        <section id="conclusion">
+          <h2>6. Conclusion: The Emergence of the Hybrid Human-Agent Quant Desk</h2>
+          <p>
+            The future of asset allocation belongs to human-in-the-loop quantitative intelligence.
+            Human Chief Investment Officers define mandates, capital preservation guardrails, and strategic horizons—while autonomous cognitive agents scan markets 24/7 to formulate mathematically grounded, high-conviction portfolios.
+          </p>
+        </section>
+
+      </div>
+
+      <!-- Chinese Content Container -->
+      <div id="content-zh" class="post-content" style="display: none;">
+        
+        <section id="abstract-zh">
+          <div class="callout">
+            <div class="callout-title">
+              <i data-lucide="sparkles"></i>
+              <span>摘要 (Executive Summary)</span>
+            </div>
+            <p style="margin-bottom: 0;">
+              七十多年来，量化投资组合管理一直建立在马科维茨现代投资组合理论（MPT）的数学基石之上。然而，机构投资者长期受制于<strong>线性多因子拥挤、样本协方差误差放大、以及对宏观地缘定性事件盲目无感</strong>的硬伤。
+              工业界最新突破并不是用黑盒大模型盲目替代数学优化器，而是<strong>将认知型多智能体系统（MAS）作为结构化主观观点生成器，与 Black-Litterman 贝叶斯资产配置模型深度融合</strong>。
+              本文深入解构从全市场筛选、观点矩阵生成（$P, Q, \Omega$）到确定性二次规划求解再平衡权重的完整生产实践。
+            </p>
+          </div>
+        </section>
+
+        <section id="crisis-zh">
+          <h2>一、传统量化投资组合管理的困境与技术瓶颈</h2>
+          <p>系统化资产配置经历了三代演进：</p>
+
+          <div class="flow-timeline">
+            <div class="timeline-node">
+              <div class="node-phase">1.0 · 1952</div>
+              <div class="node-title">马科维茨 MPT</div>
+              <div class="node-desc">均值-方差优化极易放大历史估计误差</div>
+            </div>
+            <div class="timeline-node">
+              <div class="node-phase">2.0 · 1990s</div>
+              <div class="node-title">线性多因子模型</div>
+              <div class="node-desc">Barra/Fama-French 因子迅速拥挤衰减</div>
+            </div>
+            <div class="timeline-node highlight">
+              <div class="node-phase">3.0 · 2026</div>
+              <div class="node-title">Agentic 资产配置</div>
+              <div class="node-desc">认知智能体观点与贝叶斯 Black-Litterman 融合</div>
+            </div>
+          </div>
+
+          <h3>传统量化配置的三大硬伤：</h3>
+          <ul>
+            <li><strong>因子拥挤与踩踏风险</strong>：价值、动量、低波等线性因子一旦被机构全量配置，超额收益快速衰竭，调仓时极易产生踩踏。</li>
+            <li><strong>误差放大器陷阱</strong>：传统均值-方差模型对收益均值 $\mu$ 的统计微小偏差极度敏感，容易输出荒谬的极端权重。</li>
+            <li><strong>定性宏观冲击脱节</strong>：传统模型无法实时定价央行行长讲话细微口风变化、地缘突发制裁与行业政策拐点。</li>
+          </ul>
+        </section>
+
+        <section id="bridge-zh">
+          <h2>二、数学桥梁：LLM Agent 观点如何融入 Black-Litterman 框架？</h2>
+          <p>
+            直接让大模型输出投资组合仓位是极具风险的做法。机构级方案是将多智能体作为<strong>带有自评置信度的主观观点生成器</strong>，融入经典的 <strong>Black-Litterman 贝叶斯后验均值模型</strong>：
+          </p>
+
+          <div class="formula-card">
+            <div style="font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase;">贝叶斯后验期望收益率更新公式</div>
+            <div class="formula-math">
+              $$E(R) = \left[(\tau \Sigma)^{-1} + P^T \Omega^{-1} P\right]^{-1} \left[(\tau \Sigma)^{-1} \Pi + P^T \Omega^{-1} Q\right]$$
+            </div>
+          </div>
+
+          <ol>
+            <li><strong>市场均衡先验收益 ($\Pi = \lambda \Sigma w_{mkt}$)</strong>：由基准指数市值权重与资产协方差反向推导。</li>
+            <li><strong>Agent 结构化观点 ($P, Q$)</strong>：$P$ 映射涉及标的，$Q$ 量化 Agent 推导出的预期超额收益。</li>
+            <li><strong>观点不确定性对角阵 ($\Omega$)</strong>：由 Agent 的自评置信度分数动态缩放：
+              $$\Omega_{k,k} = \tau (1 - \text{Confidence}_k) (P_k \Sigma P_k^T)$$
+            </li>
+            <li><strong>确定性凸优化求解</strong>：利用 CVXPY 求解约束二次规划，生成最终资产权重并扣减交易摩擦。</li>
+          </ol>
+        </section>
+
+        <section id="architecture-zh">
+          <h2>三、系统架构：多智能体虚拟投资组合管理舱</h2>
+          <p>生产级机构架构将选股与资产配置解耦为四大专业智能体分工：</p>
+
+          <div class="arch-container">
+            <div class="arch-header">
+              <i data-lucide="cpu" style="display: inline; vertical-align: middle; width: 18px;"></i>
+              虚拟资产配置舱：多智能体层级架构 (MAS)
+            </div>
+
+            <div class="arch-grid">
+              <div class="arch-card">
+                <div class="arch-card-title">
+                  <i data-lucide="compass" style="color: var(--accent); width: 16px;"></i>
+                  <span>宏观周期智能体</span>
+                </div>
+                <ul>
+                  <li>• 美林时钟/经济周期研判</li>
+                  <li>• 央行利率政策与通胀脉冲</li>
+                  <li>• 大类资产与行业轮动指令</li>
+                  <li>• 全球流动性条件监测</li>
+                </ul>
+              </div>
+
+              <div class="arch-card">
+                <div class="arch-card-title">
+                  <i data-lucide="filter" style="color: var(--emerald); width: 16px;"></i>
+                  <span>质量选股智能体</span>
+                </div>
+                <ul>
+                  <li>• ROIC > WACC 资本回报门槛</li>
+                  <li>• 自由现金流转化率 (>85%)</li>
+                  <li>• 净负债/EBITDA 杠杆防线</li>
+                  <li>• 行业护城河与竞争优势分析</li>
+                </ul>
+              </div>
+
+              <div class="arch-card">
+                <div class="arch-card-title">
+                  <i data-lucide="shield" style="color: var(--rose); width: 16px;"></i>
+                  <span>风险预算智能体</span>
+                </div>
+                <ul>
+                  <li>• Ledoit-Wolf 协方差收缩</li>
+                  <li>• 极值尾部 VaR/CVaR 测算</li>
+                  <li>• 最大回撤动态对冲触发</li>
+                  <li>• 资产间非线性相关性分析</li>
+                </ul>
+              </div>
+
+              <div class="arch-card">
+                <div class="arch-card-title">
+                  <i data-lucide="refresh-cw" style="color: var(--purple); width: 16px;"></i>
+                  <span>凸优化执行智能体</span>
+                </div>
+                <ul>
+                  <li>• Black-Litterman 贝叶斯融合</li>
+                  <li>• 二次规划确定性求解</li>
+                  <li>• 换手率惩罚与滑点摩擦扣减</li>
+                  <li>• 单一资产权重硬上限约束</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="arch-footer">
+              <i data-lucide="check-circle" style="display: inline; vertical-align: middle; width: 16px;"></i>
+              确定性执行约束：\(\sum w_i \equiv 100\%, \quad 0 \le w_i \le 25\%\)
+            </div>
+          </div>
+        </section>
+
+        <section id="agents-zh">
+          <h2>四、四大核心智能体协同作战解析</h2>
+          <h3>4.1 宏观周期智能体 (Macro Regime Agent)</h3>
+          <p>全天候评估收益率曲线倒挂状态、通胀粘性与货币政策，向全组合分发“防御、均衡或进攻”资产配置倾斜信号。</p>
+
+          <h3>4.2 质量选股智能体 (Quality Screener Agent)</h3>
+          <p>严密审视上千只标的资产，筛除造假及杠杆爆雷企业，挑选具备持续高资本回报率（$\text{ROIC} > 12\%$）与健康现金流的优质护城河企业。</p>
+
+          <h3>4.3 风险预算智能体 (Risk Budgeting Agent)</h3>
+          <p>通过 Ledoit-Wolf 收缩算法处理病态协方差矩阵，测算资产对组合波动率的边际风险贡献（MCR），防范隐性风险过度集中。</p>
+
+          <h3>4.4 再平衡执行智能体 (Execution & Friction Agent)</h3>
+          <p>测算预期 Alpha 收益是否足以抵消调仓滑点与税费摩擦，抑制频繁非必要交易，优化执行效率。</p>
+        </section>
+
+        <section id="guardrails-zh">
+          <h2>五、生产级工程防线：杜绝“灾难性再平衡”</h2>
+          <p>三项严苛风控红线保障组合安全底线：</p>
+          <ul>
+            <li><strong>单一标的持仓上限</strong>：个股权重 $\le 25\%$，单一申万/GICS 行业持仓 $\le 35\%$。</li>
+            <li><strong>换手率预算约束</strong>：日常单日换手率上限控制在 $5\%$，严控交易佣金侵蚀净值。</li>
+            <li><strong>波动率与回撤熔断</strong>：当近 10 日滚动年化波动率突破 $20\%$ 时，系统强制将 $30\%$ 仓位轮动回流至高评级国债与现金。</li>
+          </ul>
+
+          <div class="code-block-wrapper">
+            <div class="code-block-header">
+              <span>black_litterman_rebalance_ticket.json</span>
+              <button class="copy-btn" onclick="copyCode(this)"><i data-lucide="copy"></i> 复制</button>
+            </div>
+            <pre><code class="language-json">{
+  "portfolio_weights": {
+    "NVDA": 0.2580,
+    "MSFT": 0.2580,
+    "AAPL": 0.1733,
+    "LLY":  0.1807,
+    "XOM":  0.1299
+  },
+  "expected_annual_return": "13.39%",
+  "portfolio_volatility": "16.50%",
+  "expected_sharpe_ratio": 0.56,
+  "optimization_engine": "Black-Litterman Bayesian + Quadratic Solver",
+  "guardrail_status": "PASSED (Sum == 100%, Max Weight <= 25.8%)"
+}</code></pre>
+          </div>
+        </section>
+
+        <section id="live-demo-zh">
+          <h2>✨ 在线交互投资组合优化推演演示</h2>
+          <p>体验多智能体资产配置舱如何诊断宏观周期、筛选核心资产、构建 BL 观点并最终求解最优权重的全流程：</p>
+
+          <div class="interactive-card">
+            <div class="interactive-header">
+              <div class="interactive-title">
+                <i data-lucide="play-circle" style="color: var(--accent);"></i>
+                <span>多智能体资产配置与凸优化推演</span>
+              </div>
+              <button class="run-demo-btn" id="run-port-btn-zh">
+                <i data-lucide="play"></i>
+                <span>运行资产配置舱</span>
+              </button>
+            </div>
+
+            <div class="demo-pipeline">
+              <div class="pipeline-step" id="opt-step-1-zh">
+                <div class="step-number">Agent 01</div>
+                <div class="step-name">宏观周期评定</div>
+                <div class="step-status" id="opt-step-1-status-zh">待命</div>
+              </div>
+              <div class="pipeline-step" id="opt-step-2-zh">
+                <div class="step-number">Agent 02</div>
+                <div class="step-name">基本面质量选股</div>
+                <div class="step-status" id="opt-step-2-status-zh">待命</div>
+              </div>
+              <div class="pipeline-step" id="opt-step-3-zh">
+                <div class="step-number">Agent 03</div>
+                <div class="step-name">生成主观观点 (P,Q,Ω)</div>
+                <div class="step-status" id="opt-step-3-status-zh">待命</div>
+              </div>
+              <div class="pipeline-step" id="opt-step-4-zh">
+                <div class="step-number">Agent 04 & 05</div>
+                <div class="step-name">BL 贝叶斯权重优化</div>
+                <div class="step-status" id="opt-step-4-status-zh">待命</div>
+              </div>
+            </div>
+
+            <div class="demo-output-box" id="demo-output-zh">点击上方【运行资产配置舱】按钮，查看多智能体选股与凸优化组合推演...</div>
+          </div>
+        </section>
+
+        <section id="conclusion-zh">
+          <h2>六、总结与展望：人机协同的下一代量化投研范式</h2>
+          <p>
+            资产管理的未来属于人机协同型智能量化体系。
+            人类投资委员会把控战略方向与底层风险预算红线，多智能体集群 7×24 小时全天候捕捉非结构化 Alpha 观点，并通过纯粹严谨的贝叶斯数学优化模型实施最优配置。
+          </p>
+        </section>
+
+      </div>
+    </article>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2026 <a href="https://www.linkedin.com/in/shunchao-zhou-aab272324/" target="_blank" rel="noopener" style="color: inherit; text-decoration: underline;">SHUNCHAOZHOU</a>. All Rights Reserved. Based on MIT License.</p>
+    <div class="footer-links">
+      <a href="../index.html">Finance-AI Hub</a>
+      <a href="https://www.linkedin.com/in/shunchao-zhou-aab272324/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://github.com/SHUNCHAOZHOU/Finance-AI" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://github.com/SHUNCHAOZHOU/Finance-AI/tree/main/examples" target="_blank" rel="noopener">Python Prototype</a>
+    </div>
+  </footer>
+
+  <script>
+    lucide.createIcons();
+
+    // Theme Management (Default Light)
+    const themeBtn = document.getElementById('theme-toggle');
+    const themeIcon = document.getElementById('theme-icon');
+
+    let currentTheme = localStorage.getItem('finance_ai_theme') || 'light';
+
+    function applyTheme(theme) {
+      currentTheme = theme;
+      localStorage.setItem('finance_ai_theme', theme);
+      document.body.setAttribute('data-theme', theme);
+      themeIcon.setAttribute('data-lucide', theme === 'light' ? 'moon' : 'sun');
+      lucide.createIcons();
+    }
+
+    themeBtn.addEventListener('click', () => {
+      applyTheme(currentTheme === 'light' ? 'dark' : 'light');
+    });
+
+    applyTheme(currentTheme);
+
+    // Language State & Switching
+    let currentLang = localStorage.getItem('finance_ai_lang') || 'en';
+
+    const langData = {
+      en: {
+        indicator: "中文",
+        navBack: "Finance-AI Hub",
+        tocHeader: "Table of Contents",
+        metaReadTime: "~15 min read",
+        title: "Autonomous Portfolio Management: How LLM Multi-Agent Systems Revolutionize Systematic Stock Picking & Dynamic Asset Allocation",
+        toc: [
+          { href: "#crisis", text: "1. Crisis of Traditional Quant MPT" },
+          { href: "#bridge", text: "2. The Black-Litterman Bridge" },
+          { href: "#architecture", text: "3. Virtual Portfolio Desk Architecture" },
+          { href: "#agents", text: "4. Four Core Agent Pods" },
+          { href: "#guardrails", text: "5. Engineering Guardrails" },
+          { href: "#live-demo", text: "✨ Interactive Allocation Demo" },
+          { href: "#conclusion", text: "6. The Hybrid Human-Agent Quant" }
+        ]
+      },
+      zh: {
+        indicator: "English",
+        navBack: "Finance-AI 知识库主页",
+        tocHeader: "目录导航",
+        metaReadTime: "约 15 分钟阅读",
+        title: "自主投资组合管理：LLM 多智能体系统如何重塑系统化选股与动态资产配置",
+        toc: [
+          { href: "#crisis-zh", text: "一、传统量化 MPT 困境与瓶颈" },
+          { href: "#bridge-zh", text: "二、Black-Litterman 贝叶斯数学桥梁" },
+          { href: "#architecture-zh", text: "三、虚拟资产配置舱系统架构" },
+          { href: "#agents-zh", text: "四、四大核心智能体协同作战" },
+          { href: "#guardrails-zh", text: "五、生产级工程防线与红线" },
+          { href: "#live-demo-zh", text: "✨ 在线交互资产配置演示" },
+          { href: "#conclusion-zh", text: "六、总结与下一代量化展望" }
+        ]
+      }
+    };
+
+    function switchLanguage(lang) {
+      currentLang = lang;
+      localStorage.setItem('finance_ai_lang', lang);
+      document.documentElement.lang = lang;
+
+      const info = langData[lang];
+      document.getElementById('lang-indicator').innerText = info.indicator;
+      document.getElementById('nav-back-text').innerText = info.navBack;
+      document.getElementById('toc-header').innerText = info.tocHeader;
+      document.getElementById('meta-read-time').innerText = info.metaReadTime;
+      document.getElementById('article-title').innerText = info.title;
+
+      const tocList = document.getElementById('toc-list');
+      tocList.innerHTML = info.toc.map(item => `<li><a href="${item.href}">${item.text}</a></li>`).join('');
+
+      if (lang === 'en') {
+        document.getElementById('content-en').style.display = 'block';
+        document.getElementById('content-zh').style.display = 'none';
+      } else {
+        document.getElementById('content-en').style.display = 'none';
+        document.getElementById('content-zh').style.display = 'block';
+      }
+
+      if (window.renderMathInElement) {
+        renderMathInElement(document.body, {
+          delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '\\[', right: '\\]', display: true},
+            {left: '\\(', right: '\\)', display: false},
+            {left: '$', right: '$', display: false}
+          ],
+          throwOnError: false
+        });
+      }
+
+      lucide.createIcons();
+    }
+
+    document.getElementById('lang-toggle-btn').addEventListener('click', () => {
+      switchLanguage(currentLang === 'en' ? 'zh' : 'en');
+    });
+
+    function copyCode(btn) {
+      const pre = btn.closest('.code-block-wrapper').querySelector('pre');
+      navigator.clipboard.writeText(pre.innerText).then(() => {
+        const originalText = btn.innerHTML;
+        btn.innerHTML = currentLang === 'en' ? 'Copied!' : '已复制!';
+        setTimeout(() => {
+          btn.innerHTML = originalText;
+        }, 2000);
+      });
+    }
+
+    window.addEventListener('scroll', () => {
+      const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      document.getElementById('progress-bar').style.width = scrolled + '%';
+
+      const activeContentId = currentLang === 'en' ? 'content-en' : 'content-zh';
+      const sections = document.getElementById(activeContentId).querySelectorAll('section[id]');
+      let currentSectionId = '';
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop - 140;
+        if (winScroll >= sectionTop) {
+          currentSectionId = section.getAttribute('id');
+        }
+      });
+
+      document.querySelectorAll('.toc-list a').forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === `#${currentSectionId}`) {
+          link.classList.add('active');
+        }
+      });
+    });
+
+    // Interactive Demo Pipeline Runner for Portfolio Optimization
+    function setupPortfolioPipeline(btnId, outputId, stepPrefix, isEn) {
+      const runBtn = document.getElementById(btnId);
+      const outputBox = document.getElementById(outputId);
+      if (!runBtn) return;
+
+      const steps = [
+        { id: `${stepPrefix}1`, status: `${stepPrefix}1-status`, text: isEn ? 'Assessing Macro...' : '宏观周期评估中...', finish: isEn ? '✓ Late-Cycle Disinflation' : '✓ 后周期通胀放缓' },
+        { id: `${stepPrefix}2`, status: `${stepPrefix}2-status`, text: isEn ? 'Quality Screening...' : '基本面质地筛选中...', finish: isEn ? '✓ 5 High-ROIC Assets Passed' : '✓ 5 只高 ROIC 标的入围' },
+        { id: `${stepPrefix}3`, status: `${stepPrefix}3-status`, text: isEn ? 'Formulating Views...' : '推导结构化观点阵...', finish: isEn ? '✓ 3 Overweight Theses (P,Q,Ω)' : '✓ 3 项增持观点 (P,Q,Ω)' },
+        { id: `${stepPrefix}4`, status: `${stepPrefix}4-status`, text: isEn ? 'Convex Optimizing...' : '凸优化再平衡求解中...', finish: isEn ? '✓ Optimal Weights (Sharpe 0.56)' : '✓ 最优权重生成 (夏普 0.56)' }
+      ];
+
+      runBtn.addEventListener('click', async () => {
+        runBtn.disabled = true;
+        runBtn.style.opacity = '0.6';
+        
+        outputBox.innerText = isEn 
+          ? "[Chief Strategist] Initializing Multi-Agent Portfolio Allocation Desk...\nCandidate Universe: 6 equities across Tech, Healthcare, Energy, Retail.\n"
+          : "[投资总监] 正在启动多智能体系统化资产配置管理舱...\n候选标的池: 涵盖科技、医药、能源、消费板块共6只资产。\n";
+
+        steps.forEach(s => {
+          const el = document.getElementById(s.id + (isEn ? '-en' : '-zh'));
+          const st = document.getElementById(s.status + (isEn ? '-en' : '-zh'));
+          if (el) el.classList.remove('active');
+          if (st) {
+            st.innerText = isEn ? 'Idle' : '待命';
+            st.style.color = 'var(--text-muted)';
+          }
+        });
+
+        for (let i = 0; i < steps.length; i++) {
+          const s = steps[i];
+          const stepEl = document.getElementById(s.id + (isEn ? '-en' : '-zh'));
+          const statusEl = document.getElementById(s.status + (isEn ? '-en' : '-zh'));
+
+          if (stepEl) stepEl.classList.add('active');
+          if (statusEl) {
+            statusEl.innerText = s.text;
+            statusEl.style.color = 'var(--accent)';
+          }
+
+          await new Promise(r => setTimeout(r, 700));
+
+          if (statusEl) {
+            statusEl.innerText = s.finish;
+            statusEl.style.color = 'var(--emerald)';
+          }
+
+          if (i === 0) {
+            outputBox.innerText += isEn
+              ? "\n[MacroRegimeAgent] Yield curve disinversion + Fed easing cycle detected -> Tilt 65% Equities, 25% Fixed Income, 10% Cash/Gold."
+              : "\n[宏观周期智能体] 监测到收益率曲线陡峭化与降息周期开启 -> 大类资产配置倾斜: 65%权益, 25%固收, 10%现金/黄金。";
+          } else if (i === 1) {
+            outputBox.innerText += isEn
+              ? "\n[QualityScreener] Screening universe: NVDA (ROIC 38.5%), MSFT (26.2%), AAPL (42.1%), LLY (19.4%), XOM (14.8%) PASSED. XYZ (Retail) filtered out (Net Debt > 4.5x)."
+              : "\n[质量选股智能体] 标的初筛: NVDA(ROIC 38.5%), MSFT(26.2%), AAPL(42.1%), LLY(19.4%), XOM(14.8%) 达标入围；XYZ(零售)因负债高企被剔除。";
+          } else if (i === 2) {
+            outputBox.innerText += isEn
+              ? "\n[SubjectiveViewsAgent] Formulated Black-Litterman Views:\n  - Q1: NVDA +18% excess return (Confidence 85%)\n  - Q2: MSFT +14% excess return (Confidence 80%)\n  - Q3: LLY  +15% excess return (Confidence 78%)"
+              : "\n[主观观点智能体] 生成 Black-Litterman 结构化观点:\n  - 观点1: NVDA 预期超额回报 +18% (置信度 85%)\n  - 观点2: MSFT 预期超额回报 +14% (置信度 80%)\n  - 观点3: LLY 预期超额回报 +15% (置信度 78%)";
+          } else if (i === 3) {
+            outputBox.innerText += isEn
+              ? "\n[BlackLittermanOptimizer] Convex Quadratic Solved:\n  - NVDA: 25.80% (Overweight)\n  - MSFT: 25.80% (Overweight)\n  - AAPL: 17.33% (Neutral)\n  - LLY:  18.07% (Neutral)\n  - XOM:  12.99% (Underweight)\n\n🎉 Expected Annual Return: 13.39%, Volatility: 16.5%, Sharpe Ratio: 0.56."
+              : "\n[BL优化求解智能体] 二次规划求解出最优配置比例:\n  - NVDA: 25.80% (超配)\n  - MSFT: 25.80% (超配)\n  - AAPL: 17.33% (标配)\n  - LLY:  18.07% (标配)\n  - XOM:  12.99% (低配)\n\n🎉 组合预期年化回报率: 13.39%, 预期组合波动率: 16.5%, 夏普比率: 0.56。";
+          }
+          outputBox.scrollTop = outputBox.scrollHeight;
+        }
+
+        runBtn.disabled = false;
+        runBtn.style.opacity = '1';
+      });
+    }
+
+    setupPortfolioPipeline('run-port-btn-en', 'demo-output-en', 'opt-step-', true);
+    setupPortfolioPipeline('run-port-btn-zh', 'demo-output-zh', 'opt-step-', false);
+
+    switchLanguage(currentLang);
+  </script>
+</body>
+</html>

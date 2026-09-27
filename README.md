@@ -41,9 +41,9 @@ This repository is continuously updated with in-depth academic/industrial synthe
 | :---: | :--- | :--- | :---: |
 | **01** | **Autonomous Accounting & Continuous Close** | Multi-source 3-way matching, bank rec fuzzy clustering, self-healing month-end close | 🟢 **Published** |
 | **02** | **Institutional Equity Research & News Alpha** | Causal event graphs, 10-Q fundamental cross-auditing, Bull-vs-Bear adversarial debate | 🟢 **Published** |
-| **03** | **Dynamic Risk & Graph RegTech** | Graph-RAG agents for related-party transaction discovery, anti-money laundering (AML) | 🟡 *In Progress* |
-| **04** | **Autonomous FP&A & Corporate Treasury** | Voucher-level variance attribution, rolling 90-day Monte Carlo liquidity stress testing | 🟡 *In Progress* |
-| **05** | **Multimodal Regulatory & Filing Perception** | Vision-language document models for complex earnings charts and foreign VAT invoices | 🟡 *Planned* |
+| **03** | **Systematic Stock Picking & Dynamic Asset Allocation** | Bayesian Black-Litterman model integration, multi-agent view matrices (P, Q, Ω), convex solvers | 🟢 **Published** |
+| **04** | **Dynamic Risk & Graph RegTech** | Graph-RAG agents for related-party transaction discovery, anti-money laundering (AML) | 🟡 *In Progress* |
+| **05** | **Autonomous FP&A & Corporate Treasury** | Voucher-level variance attribution, rolling 90-day Monte Carlo liquidity stress testing | 🟡 *In Progress* |
 | **06** | **Game-Theoretic Market Simulation** | Multi-agent algorithmic trading sandboxes with reinforcement learning and ZKP privacy | 🟡 *Frontier* |
 
 ---
@@ -63,6 +63,13 @@ This repository is continuously updated with in-depth academic/industrial synthe
 - **Source Files**: English ([`llm_agent_in_equity_research_en.md`](articles/llm_agent_in_equity_research_en.md)) / 中文 ([`llm_agent_in_equity_research.md`](articles/llm_agent_in_equity_research.md))
 - **Executable Prototype**: [`examples/news_to_equity_research_agent_demo.py`](examples/news_to_equity_research_agent_demo.py)
 - **Key Concepts**: Causal transmission vectors, cross-modal 10-Q fundamental triangulation, adversarial Bull-vs-Bear debate, and grounded research notes.
+
+### 3. Systematic Stock Picking & Dynamic Asset Allocation
+- **Title**: *Autonomous Portfolio Management: How LLM Multi-Agent Systems Revolutionize Systematic Stock Picking & Dynamic Asset Allocation*
+- **Interactive Web Page**: [Read Online](https://shunchaozhou.github.io/Finance-AI/articles/llm-agent-in-portfolio-selection.html)
+- **Source Files**: English ([`llm_agent_in_portfolio_selection_en.md`](articles/llm_agent_in_portfolio_selection_en.md)) / 中文 ([`llm_agent_in_portfolio_selection.md`](articles/llm_agent_in_portfolio_selection.md))
+- **Executable Prototype**: [`examples/portfolio_agent_optimization_demo.py`](examples/portfolio_agent_optimization_demo.py)
+- **Key Concepts**: Bayesian Black-Litterman model, Agent subjective view matrices ($P, Q, \Omega$), Ledoit-Wolf covariance shrinkage, and quadratic programming with turnover friction.
 
 ---
 
@@ -121,7 +128,8 @@ Finance-AI/
 │   └── llm_agent_in_equity_research.md        # Chinese Markdown equity research source
 ├── examples/
 │   ├── multi_agent_accounting_demo.py         # Autonomous accounting & reconciliation MAS prototype
-│   └── news_to_equity_research_agent_demo.py  # Autonomous news analysis & equity research pod prototype
+│   ├── news_to_equity_research_agent_demo.py  # Autonomous news analysis & equity research pod prototype
+│   └── portfolio_agent_optimization_demo.py   # Multi-agent stock picking & Black-Litterman allocation
 ├── scripts/
 │   └── publish_article.py                     # Automation script for branch syncing & verification
 ├── LICENSE                                    # MIT License
@@ -141,6 +149,9 @@ python3 examples/multi_agent_accounting_demo.py
 
 # 2. Run the Autonomous Equity Research Pod (News -> Audit -> Bull/Bear Debate -> Report)
 python3 examples/news_to_equity_research_agent_demo.py
+
+# 3. Run the Autonomous Portfolio Optimization & Black-Litterman Allocation Desk
+python3 examples/portfolio_agent_optimization_demo.py
 ```
 
 ### 2. Preview the Web Portal Locally

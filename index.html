@@ -791,7 +791,7 @@
 
     <div class="hero-stats">
       <div class="stat-item">
-        <div class="stat-number">02+</div>
+        <div class="stat-number">03+</div>
         <div class="stat-label" data-i18n="stat_published">Flagship Research Papers</div>
       </div>
       <div class="stat-item">
@@ -963,19 +963,44 @@
         </div>
       </div>
 
-      <!-- Card 3: Risk & RegTech (Upcoming) -->
+      <!-- Card 3: Portfolio Optimization & Stock Picking (Published) -->
+      <div class="article-card" data-cat="quant">
+        <div class="card-top">
+          <div class="card-category-row">
+            <span class="card-category quant" data-i18n="card_3_cat">Portfolio Management</span>
+            <span class="card-status ready">
+              <i data-lucide="check-circle" style="width: 14px; height: 14px;"></i> <span data-i18n="status_published">Published</span>
+            </span>
+          </div>
+          <h3 class="card-title">
+            <a href="articles/llm-agent-in-portfolio-selection.html" data-i18n="card_3_title">Autonomous Portfolio Management: How LLM Multi-Agent Systems Revolutionize Systematic Stock Picking & Dynamic Asset Allocation</a>
+          </h3>
+          <p class="card-desc" data-i18n="card_3_desc">
+            Bridging cognitive AI multi-agent views with the Bayesian Black-Litterman framework and convex quadratic programming solvers for robust asset allocation.
+          </p>
+        </div>
+        <div class="card-footer">
+          <span><a href="https://www.linkedin.com/in/shunchao-zhou-aab272324/" target="_blank" rel="noopener" style="color: inherit; text-decoration: underline;">SHUNCHAOZHOU</a> · 2026</span>
+          <a href="articles/llm-agent-in-portfolio-selection.html" class="card-link">
+            <span data-i18n="card_read_link">Read Article</span>
+            <i data-lucide="chevron-right" style="width: 16px; height: 16px;"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- Card 4: Risk & RegTech (Upcoming) -->
       <div class="article-card" data-cat="risk">
         <div class="card-top">
           <div class="card-category-row">
-            <span class="card-category risk" data-i18n="card_3_cat">Dynamic Risk & RegTech</span>
+            <span class="card-category risk" data-i18n="card_4_cat">Dynamic Risk & RegTech</span>
             <span class="card-status">
               <i data-lucide="clock" style="width: 14px; height: 14px;"></i> <span data-i18n="status_upcoming">In Progress</span>
             </span>
           </div>
           <h3 class="card-title">
-            <a href="javascript:void(0)" onclick="alertLanguageNotice()" data-i18n="card_3_title">Graph-RAG and LLM Agents in Related-Party Transactions & Anti-Money Laundering</a>
+            <a href="javascript:void(0)" onclick="alertLanguageNotice()" data-i18n="card_4_title">Graph-RAG and LLM Agents in Related-Party Transactions & Anti-Money Laundering</a>
           </h3>
-          <p class="card-desc" data-i18n="card_3_desc">
+          <p class="card-desc" data-i18n="card_4_desc">
             Architecting knowledge-graph-powered agents to penetrate complex multi-tier cross-holdings, tax circumvention schemes, and algorithmic round-tripping fraud.
           </p>
         </div>
@@ -985,19 +1010,19 @@
         </div>
       </div>
 
-      <!-- Card 4: FP&A (Upcoming) -->
+      <!-- Card 5: FP&A (Upcoming) -->
       <div class="article-card" data-cat="fpa">
         <div class="card-top">
           <div class="card-category-row">
-            <span class="card-category" data-i18n="card_4_cat">Autonomous FP&A</span>
+            <span class="card-category" data-i18n="card_5_cat">Autonomous FP&A</span>
             <span class="card-status">
               <i data-lucide="clock" style="width: 14px; height: 14px;"></i> <span data-i18n="status_upcoming">In Progress</span>
             </span>
           </div>
           <h3 class="card-title">
-            <a href="javascript:void(0)" onclick="alertLanguageNotice()" data-i18n="card_4_title">Autonomous FP&A: Dynamic Enterprise Budgeting & Monte Carlo Cash Flow Stress Testing</a>
+            <a href="javascript:void(0)" onclick="alertLanguageNotice()" data-i18n="card_5_title">Autonomous FP&A: Dynamic Enterprise Budgeting & Monte Carlo Cash Flow Stress Testing</a>
           </h3>
-          <p class="card-desc" data-i18n="card_4_desc">
+          <p class="card-desc" data-i18n="card_5_desc">
             Moving beyond static Excel spreadsheets toward environment-aware FP&A agents that run voucher-level variance diagnosis and rolling 90-day liquidity simulations.
           </p>
         </div>
@@ -1105,6 +1130,7 @@
         <a href="index.html" data-i18n="footer_home">Home</a>
         <a href="articles/ai-agent-in-accounting.html" data-i18n="footer_paper">Accounting Paper</a>
         <a href="articles/llm-agent-in-equity-research.html">Equity Research Paper</a>
+        <a href="articles/llm-agent-in-portfolio-selection.html">Portfolio Allocation Paper</a>
         <a href="https://www.linkedin.com/in/shunchao-zhou-aab272324/" target="_blank" rel="noopener">LinkedIn</a>
         <a href="https://github.com/SHUNCHAOZHOU/Finance-AI" target="_blank" rel="noopener">GitHub</a>
         <a href="https://github.com/SHUNCHAOZHOU/Finance-AI/tree/main/examples" target="_blank" rel="noopener" data-i18n="footer_examples">Python Prototypes</a>
@@ -1176,14 +1202,17 @@
         card_2_cat: "Quantitative & Equity Research",
         card_2_title: "Autonomous Financial Analysts: How LLM Agents Transform News Intelligence and Equity Research Reports",
         card_2_desc: "From headline noise to actionable alpha: structuring multi-agent pods with causal event graphs, 10-Q fundamental cross-auditing, and adversarial Bull-vs-Bear debate.",
+        card_3_cat: "Portfolio Management",
+        card_3_title: "Autonomous Portfolio Management: How LLM Multi-Agent Systems Revolutionize Systematic Stock Picking & Dynamic Asset Allocation",
+        card_3_desc: "Bridging cognitive AI multi-agent views with the Bayesian Black-Litterman framework and convex quadratic programming solvers for robust asset allocation.",
         coming_soon: "Coming Soon",
         topic_planned: "Topic Planned",
-        card_3_cat: "Dynamic Risk & RegTech",
-        card_3_title: "Graph-RAG and LLM Agents in Related-Party Transactions & Anti-Money Laundering",
-        card_3_desc: "Architecting knowledge-graph-powered agents to penetrate complex multi-tier cross-holdings, tax circumvention schemes, and algorithmic round-tripping fraud.",
-        card_4_cat: "Autonomous FP&A",
-        card_4_title: "Autonomous FP&A: Dynamic Enterprise Budgeting & Monte Carlo Cash Flow Stress Testing",
-        card_4_desc: "Moving beyond static Excel spreadsheets toward environment-aware FP&A agents that run voucher-level variance diagnosis and rolling 90-day liquidity simulations.",
+        card_4_cat: "Dynamic Risk & RegTech",
+        card_4_title: "Graph-RAG and LLM Agents in Related-Party Transactions & Anti-Money Laundering",
+        card_4_desc: "Architecting knowledge-graph-powered agents to penetrate complex multi-tier cross-holdings, tax circumvention schemes, and algorithmic round-tripping fraud.",
+        card_5_cat: "Autonomous FP&A",
+        card_5_title: "Autonomous FP&A: Dynamic Enterprise Budgeting & Monte Carlo Cash Flow Stress Testing",
+        card_5_desc: "Moving beyond static Excel spreadsheets toward environment-aware FP&A agents that run voucher-level variance diagnosis and rolling 90-day liquidity simulations.",
         vision_title: "Research Mission & Philosophical Thesis",
         vision_lead: "This platform represents an ongoing, living research initiative spearheaded by <strong><a href='https://www.linkedin.com/in/shunchao-zhou-aab272324/' target='_blank' rel='noopener' style='color: var(--accent); text-decoration: underline;'>Shunchao Zhou</a></strong>. The fundamental mission is to bridge the chasm between probabilistic artificial intelligence and the zero-tolerance determinism demanded by corporate accounting and institutional capital markets.",
         vision_p1_tag: "Core Pillar 01",
@@ -1220,7 +1249,7 @@
         hero_badge: "Finance-AI 持续更新计划：探讨与重塑金融全场景智能体",
         hero_title: "金融与会计领域的<br>AI Agent 落地前沿与实践",
         hero_subtitle: "从会计凭证与多源自愈对账，到量化研报抽取、多智能体协同与动态风控体系。沉淀深度博客思考、严密技术架构与生产级可运行原型代码。",
-        stat_published: "已发布 2 篇旗舰深度专栏",
+        stat_published: "已发布 3 篇旗舰深度专栏",
         stat_domains: "涵盖金融会计核心赛道",
         stat_mas: "多智能体协同代码就绪",
         stat_open: "100% 开源与持续演进",
@@ -1246,14 +1275,17 @@
         card_2_cat: "量化投研与基本面",
         card_2_title: "自主投研分析师：LLM Agent 如何重构金融新闻情绪穿透与专业研报生成",
         card_2_desc: "从快讯噪音到投资 Alpha：构建因果事件图谱、财报跨模态硬核核验、多空智能体博弈与确定性估值研报生成流水线。",
+        card_3_cat: "资产配置与选股",
+        card_3_title: "自主投资组合管理：LLM 多智能体系统如何重塑系统化选股与动态资产配置",
+        card_3_desc: "将认知型多智能体主观观点与 Black-Litterman 贝叶斯资产配置模型深度融合，结合确定性二次规划求解再平衡权重。",
         coming_soon: "即将上线",
         topic_planned: "专题规划中",
-        card_3_cat: "智能风控",
-        card_3_title: "面向金税四期与反洗钱：图大模型 Agent 在关联交易与反欺诈中的实践",
-        card_3_desc: "剖析基于 GraphRAG 的信贷风控与税务稽查智能体架构，如何自主穿透多层隐秘股权嵌套与资金空转回流洗钱风险。",
-        card_4_cat: "管理会计",
-        card_4_title: "自主 FP&A 智能体：如何让 AI 掌管企业动态预算与蒙特卡洛现金流预测",
-        card_4_desc: "跳出静态 Excel 预算模式，构建具有环境交互能力的 FP&A 智能体，实现业务指标异动自主归因与滚动流动性压力测试。",
+        card_4_cat: "智能风控",
+        card_4_title: "面向金税四期与反洗钱：图大模型 Agent 在关联交易与反欺诈中的实践",
+        card_4_desc: "剖析基于 GraphRAG 的信贷风控与税务稽查智能体架构，如何自主穿透多层隐秘股权嵌套与资金空转回流洗钱风险。",
+        card_5_cat: "管理会计",
+        card_5_title: "自主 FP&A 智能体：如何让 AI 掌管企业动态预算与蒙特卡洛现金流预测",
+        card_5_desc: "跳出静态 Excel 预算模式，构建具有环境交互能力的 FP&A 智能体，实现业务指标异动自主归因与滚动流动性压力测试。",
         vision_title: "研究使命与学术/工业实践哲学",
         vision_lead: "本项目是由 <strong><a href='https://www.linkedin.com/in/shunchao-zhou-aab272324/' target='_blank' rel='noopener' style='color: var(--accent); text-decoration: underline;'>周顺超 (Shunchao Zhou)</a></strong> 主导的长期、前沿持续研究平台。核心使命在于探索如何弥合大模型的概率生成特性与现代企业财务、金融二级市场严格的零容错确定性诉求之间的鸿沟。",
         vision_p1_tag: "核心基石 01",
