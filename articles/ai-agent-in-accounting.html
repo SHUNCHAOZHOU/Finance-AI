@@ -1,27 +1,27 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>从规则驱动到自主协同：AI Agent 在会计行业的落地演进与未来重塑</title>
+  <title>From Rule-Based Automation to Autonomous Orchestration: AI Agents in Accounting | Finance-AI</title>
   
   <!-- Meta tags for SEO & Social Sharing -->
-  <meta name="description" content="深度解构 AI Agent 在财务与会计领域的底层技术架构、典型落地场景、多智能体协同机制及工程化护栏实践。">
+  <meta name="description" content="An end-to-end architectural and practical blueprint of AI Agents in accounting and finance: multi-agent reconciliation, autonomous month-end close, and deterministic guardrails.">
   <meta name="author" content="SHUNCHAOZHOU">
-  <meta property="og:title" content="AI Agent 在会计行业的落地演进与未来重塑">
-  <meta property="og:description" content="从规则驱动到自主协同，解构大模型与多智能体技术重塑现代财务的全景图。">
+  <meta property="og:title" content="AI Agents in Accounting: From Rule-Based to Autonomous Orchestration">
+  <meta property="og:description" content="Deconstructing the next paradigm in corporate finance and intelligent accounting powered by Multi-Agent Systems.">
   <meta property="og:type" content="article">
-  <meta property="og:url" content="https://shunchaozhou.github.io/Finance-AI/">
+  <meta property="og:url" content="https://shunchaozhou.github.io/Finance-AI/articles/ai-agent-in-accounting.html">
 
   <!-- Google Fonts & CDN libraries -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700&family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800&family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
   
   <!-- KaTeX for math formulas -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
 
   <!-- Prism.js for code highlight -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css">
@@ -72,7 +72,7 @@
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      transition: background-color 0.3s ease, border-color 0.3s ease, color 0.2s ease;
+      transition: background-color 0.25s ease, border-color 0.25s ease, color 0.2s ease;
     }
 
     body {
@@ -85,7 +85,6 @@
       overflow-x: hidden;
     }
 
-    /* Top Progress Bar */
     #progress-bar {
       position: fixed;
       top: 0;
@@ -97,11 +96,10 @@
       transition: width 0.1s linear;
     }
 
-    /* Navigation Header */
     header {
       position: sticky;
       top: 0;
-      background-color: rgba(15, 23, 42, 0.85);
+      background-color: rgba(15, 23, 42, 0.88);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border-color);
@@ -124,34 +122,23 @@
     .brand {
       display: flex;
       align-items: center;
-      gap: 0.75rem;
+      gap: 0.65rem;
       text-decoration: none;
       color: var(--text-primary);
       font-weight: 700;
-      font-size: 1.15rem;
-    }
-
-    .brand-badge {
-      background: var(--accent-gradient);
-      color: #fff;
-      padding: 0.2rem 0.55rem;
-      border-radius: 6px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      letter-spacing: 0.05em;
+      font-size: 1.05rem;
     }
 
     .nav-actions {
       display: flex;
       align-items: center;
-      gap: 1rem;
+      gap: 0.85rem;
     }
 
-    .icon-btn {
+    .icon-btn, .lang-toggle-btn {
       background: var(--bg-surface);
       border: 1px solid var(--border-color);
       color: var(--text-primary);
-      width: 38px;
       height: 38px;
       border-radius: 8px;
       display: inline-flex;
@@ -159,15 +146,25 @@
       justify-content: center;
       cursor: pointer;
       text-decoration: none;
+      font-size: 0.84rem;
+      font-weight: 600;
     }
 
-    .icon-btn:hover {
+    .icon-btn {
+      width: 38px;
+    }
+
+    .lang-toggle-btn {
+      padding: 0 0.85rem;
+      gap: 0.45rem;
+    }
+
+    .icon-btn:hover, .lang-toggle-btn:hover {
       background: var(--bg-surface-elevated);
       color: var(--accent);
       border-color: var(--accent);
     }
 
-    /* Main Container with Sidebar */
     .layout-wrapper {
       max-width: 1360px;
       margin: 2.5rem auto;
@@ -178,7 +175,6 @@
       position: relative;
     }
 
-    /* Sidebar Navigation (TOC) */
     aside {
       position: sticky;
       top: 5.5rem;
@@ -213,15 +209,15 @@
       list-style: none;
       display: flex;
       flex-direction: column;
-      gap: 0.5rem;
+      gap: 0.45rem;
     }
 
     .toc-list a {
       color: var(--text-secondary);
       text-decoration: none;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       display: block;
-      padding: 0.45rem 0.75rem;
+      padding: 0.4rem 0.65rem;
       border-radius: 6px;
       border-left: 2px solid transparent;
       line-height: 1.4;
@@ -239,12 +235,10 @@
       font-weight: 600;
     }
 
-    /* Article Content */
     article {
       max-width: 820px;
     }
 
-    /* Hero Article Header */
     .post-header {
       margin-bottom: 3.5rem;
       padding-bottom: 2rem;
@@ -269,7 +263,7 @@
     }
 
     .post-title {
-      font-size: 2.35rem;
+      font-size: 2.25rem;
       line-height: 1.35;
       font-weight: 800;
       letter-spacing: -0.02em;
@@ -294,9 +288,8 @@
       gap: 0.45rem;
     }
 
-    /* Content Typography & Elements */
     .post-content h2 {
-      font-size: 1.7rem;
+      font-size: 1.65rem;
       font-weight: 700;
       margin-top: 3.5rem;
       margin-bottom: 1.25rem;
@@ -309,7 +302,7 @@
     }
 
     .post-content h3 {
-      font-size: 1.3rem;
+      font-size: 1.25rem;
       font-weight: 600;
       margin-top: 2.25rem;
       margin-bottom: 0.85rem;
@@ -337,7 +330,6 @@
       margin-bottom: 0.55rem;
     }
 
-    /* Callout & Quotes */
     .callout {
       background: var(--bg-surface);
       border-left: 4px solid var(--accent);
@@ -356,7 +348,6 @@
       gap: 0.5rem;
     }
 
-    /* Tables */
     .table-container {
       overflow-x: auto;
       margin: 2rem 0;
@@ -368,7 +359,7 @@
     table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 0.92rem;
+      font-size: 0.9rem;
       text-align: left;
     }
 
@@ -386,11 +377,6 @@
       color: var(--text-secondary);
     }
 
-    tr:last-child td {
-      border-bottom: none;
-    }
-
-    /* Diagram & ASCII Art styling */
     .diagram-box {
       background: var(--bg-surface);
       border: 1px solid var(--border-color);
@@ -399,13 +385,12 @@
       margin: 2rem 0;
       overflow-x: auto;
       font-family: var(--font-mono);
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       line-height: 1.5;
       color: var(--accent);
       white-space: pre;
     }
 
-    /* Code Block Header and Container */
     .code-block-wrapper {
       position: relative;
       margin: 2rem 0;
@@ -451,7 +436,6 @@
       background: #090d16 !important;
     }
 
-    /* Interactive Live Demo Component */
     .interactive-card {
       background: var(--bg-surface);
       border: 1px solid var(--border-color);
@@ -492,7 +476,6 @@
       border-radius: 10px;
       padding: 1rem 0.85rem;
       text-align: center;
-      position: relative;
     }
 
     .pipeline-step.active {
@@ -554,7 +537,6 @@
       white-space: pre-wrap;
     }
 
-    /* Footer */
     footer {
       border-top: 1px solid var(--border-color);
       padding: 3rem 1.5rem;
@@ -581,7 +563,6 @@
       text-decoration: underline;
     }
 
-    /* Responsive */
     @media (max-width: 1024px) {
       .layout-wrapper {
         grid-template-columns: 1fr;
@@ -596,7 +577,7 @@
 
     @media (max-width: 640px) {
       .post-title {
-        font-size: 1.8rem;
+        font-size: 1.75rem;
       }
       .demo-pipeline {
         grid-template-columns: 1fr;
@@ -609,50 +590,55 @@
 </head>
 <body data-theme="dark">
 
-  <!-- Top Scroll Progress Bar -->
   <div id="progress-bar"></div>
 
-  <!-- Header Navigation -->
+  <!-- Header -->
   <header>
     <div class="nav-container">
       <a href="../index.html" class="brand">
         <i data-lucide="arrow-left"></i>
-        <span>返回 Finance-AI 知识库主页</span>
+        <span id="nav-back-text">Finance-AI Hub</span>
       </a>
 
       <div class="nav-actions">
-        <a href="../index.html" class="icon-btn" title="返回博客门户">
+        <!-- Language Switcher -->
+        <button id="lang-toggle-btn" class="lang-toggle-btn" title="Switch Language / 切换语言">
+          <i data-lucide="globe"></i>
+          <span id="lang-indicator">中文</span>
+        </button>
+
+        <a href="../index.html" class="icon-btn" title="Home">
           <i data-lucide="home"></i>
         </a>
-        <a href="https://github.com/SHUNCHAOZHOU/Finance-AI" class="icon-btn" target="_blank" rel="noopener" title="查看 GitHub 仓库源码">
+        <a href="https://github.com/SHUNCHAOZHOU/Finance-AI" class="icon-btn" target="_blank" rel="noopener" title="GitHub">
           <i data-lucide="github"></i>
         </a>
-        <button id="theme-toggle" class="icon-btn" title="切换深色/浅色外观">
+        <button id="theme-toggle" class="icon-btn" title="Toggle Theme">
           <i data-lucide="sun" id="theme-icon"></i>
         </button>
       </div>
     </div>
   </header>
 
-  <!-- Main Layout -->
+  <!-- Layout -->
   <div class="layout-wrapper">
     
-    <!-- Left Navigation Table of Contents -->
+    <!-- Left Navigation TOC -->
     <aside>
       <div class="toc-title">
         <i data-lucide="list"></i>
-        <span>目录导航</span>
+        <span id="toc-header">Table of Contents</span>
       </div>
       <ul class="toc-list" id="toc-list">
-        <li><a href="#abstract">文章摘要</a></li>
-        <li><a href="#evolution">一、演进脉络：为什么是会计？</a></li>
-        <li><a href="#paradigm">二、传统 RPA vs Copilot vs Agent</a></li>
-        <li><a href="#architecture">三、核心架构：四维驱动引擎</a></li>
-        <li><a href="#scenarios">四、五大落地场景深度解构</a></li>
-        <li><a href="#multi-agent">五、多智能体协同：虚拟财务室</a></li>
-        <li><a href="#guardrails">六、工程挑战：破解幻觉与零容错</a></li>
-        <li><a href="#live-demo">✨ 在线交互原型演示</a></li>
-        <li><a href="#summary">七、总结与展望：连续财务时代</a></li>
+        <li><a href="#abstract" id="toc-abstract">Executive Summary</a></li>
+        <li><a href="#evolution" id="toc-evolution">1. Evolutionary Trajectory</a></li>
+        <li><a href="#paradigm" id="toc-paradigm">2. Paradigm Shift: RPA vs Agent</a></li>
+        <li><a href="#architecture" id="toc-architecture">3. Core System Architecture</a></li>
+        <li><a href="#scenarios" id="toc-scenarios">4. Five Production Scenarios</a></li>
+        <li><a href="#multi-agent" id="toc-multi-agent">5. Multi-Agent Collaboration</a></li>
+        <li><a href="#guardrails" id="toc-guardrails">6. Deterministic Guardrails</a></li>
+        <li><a href="#live-demo" id="toc-demo">✨ Interactive Demo</a></li>
+        <li><a href="#summary" id="toc-summary">7. Continuous Accounting Outlook</a></li>
       </ul>
     </aside>
 
@@ -661,13 +647,15 @@
       <div class="post-header">
         <div class="post-meta-badges">
           <span class="meta-tag">AI Agent</span>
-          <span class="meta-tag">多智能体协同</span>
-          <span class="meta-tag">智能财务与会计</span>
-          <span class="meta-tag">R2R 月结自动化</span>
-          <span class="meta-tag">确定性护栏</span>
+          <span class="meta-tag">Multi-Agent Systems (MAS)</span>
+          <span class="meta-tag">Intelligent Accounting</span>
+          <span class="meta-tag">Autonomous Month-End Close</span>
+          <span class="meta-tag">Deterministic Guardrails</span>
         </div>
 
-        <h1 class="post-title">从规则驱动到自主协同：AI Agent 在会计行业的落地演进与未来重塑</h1>
+        <h1 class="post-title" id="article-title">
+          From Rule-Based Automation to Autonomous Orchestration: The Evolution and Re-architecture of AI Agents in Accounting
+        </h1>
 
         <div class="post-meta-row">
           <div class="meta-item">
@@ -676,22 +664,353 @@
           </div>
           <div class="meta-item">
             <i data-lucide="calendar"></i>
-            <span>2026 年</span>
+            <span>2026</span>
           </div>
           <div class="meta-item">
             <i data-lucide="clock"></i>
-            <span>约 12 分钟阅读</span>
+            <span id="meta-read-time">~12 min read</span>
           </div>
           <div class="meta-item">
             <i data-lucide="git-branch"></i>
-            <a href="https://github.com/SHUNCHAOZHOU/Finance-AI" target="_blank" rel="noopener" style="color: inherit; text-decoration: underline;">GitHub: Finance-AI</a>
+            <a href="https://github.com/SHUNCHAOZHOU/Finance-AI" target="_blank" rel="noopener" style="color: inherit; text-decoration: underline;">Finance-AI</a>
           </div>
         </div>
       </div>
 
-      <div class="post-content">
-        
-        <!-- Abstract Section -->
+      <!-- Article Dynamic Content Container -->
+      <div class="post-content" id="article-content">
+        <!-- Content will be injected by JavaScript according to current language -->
+      </div>
+    </article>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2026 SHUNCHAOZHOU. All Rights Reserved. Based on MIT License.</p>
+    <div class="footer-links">
+      <a href="../index.html">Finance-AI Hub</a>
+      <a href="https://github.com/SHUNCHAOZHOU/Finance-AI" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://github.com/SHUNCHAOZHOU/Finance-AI/tree/main/examples" target="_blank" rel="noopener">Python Code</a>
+    </div>
+  </footer>
+
+  <script>
+    // Lucide Icons
+    lucide.createIcons();
+
+    // Theme Switcher
+    const themeBtn = document.getElementById('theme-toggle');
+    const themeIcon = document.getElementById('theme-icon');
+    const body = document.body;
+
+    themeBtn.addEventListener('click', () => {
+      const currentTheme = body.getAttribute('data-theme');
+      const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      body.setAttribute('data-theme', nextTheme);
+      themeIcon.setAttribute('data-lucide', nextTheme === 'dark' ? 'sun' : 'moon');
+      lucide.createIcons();
+    });
+
+    // Bilingual Article Content (Default English, Chinese optional)
+    const articleData = {
+      en: {
+        indicator: "中文",
+        navBack: "Finance-AI Hub",
+        tocHeader: "Table of Contents",
+        metaReadTime: "~12 min read",
+        toc: {
+          abstract: "Executive Summary",
+          evolution: "1. Evolutionary Trajectory",
+          paradigm: "2. Paradigm Shift: RPA vs Agent",
+          architecture: "3. Core System Architecture",
+          scenarios: "4. Five Production Scenarios",
+          multiAgent: "5. Multi-Agent Collaboration",
+          guardrails: "6. Deterministic Guardrails",
+          demo: "✨ Interactive Demo",
+          summary: "7. Continuous Accounting Outlook"
+        },
+        title: "From Rule-Based Automation to Autonomous Orchestration: The Evolution and Re-architecture of AI Agents in Accounting",
+        html: `
+        <section id="abstract">
+          <div class="callout">
+            <div class="callout-title">
+              <i data-lucide="sparkles"></i>
+              <span>Executive Summary</span>
+            </div>
+            <p style="margin-bottom: 0;">
+              Over the past three decades, enterprise accounting has evolved through four defining phases: <strong>Manual Computerization &rarr; Centralized ERP &rarr; Rule-Based RPA &rarr; Generative AI Copilots</strong>. Yet, accounting teams worldwide remain trapped in labor-intensive operational bottlenecks: <strong>unstructured document parsing, cross-system integration gaps, non-standard exception handling, and reliance on manual interpretive judgment</strong>.
+              As Large Language Models (LLMs) advance into <strong>AI Agents capable of goal-driven task planning, multi-step tool use, persistent domain memory, and iterative self-reflection</strong>, the accounting discipline is undergoing a fundamental paradigm shift. 
+              This paper provides an end-to-end architectural and practical blueprint of AI Agents in corporate accounting and finance.
+            </p>
+          </div>
+        </section>
+
+        <section id="evolution">
+          <h2>1. Evolutionary Trajectory: Why Accounting is the Fertile Ground for AI Agents</h2>
+          <p>Accounting is universally recognized as the "language of business." Ironically, despite being one of the earliest adopters of enterprise IT, it remains one of the heaviest employers of manual data workarounds:</p>
+
+          <div class="diagram-box">
++-------------------------------------------------------------------------------------------------+
+|  1.0 Computerization     2.0 Centralized ERP      3.0 Rule-Based RPA    4.0 Copilot Era    5.0 Autonomous Agents |
+| (Electronic Ledgers) -> (Integrated Databases) -> (UI Scraping Scripts) -> (Conversational) -> (Goal-Driven MAS)    |
+|        1990s                    2000s                    2015s                 2023s                 2025s+      |
++-------------------------------------------------------------------------------------------------+</div>
+
+          <h3>The Breaking Point of Legacy Solutions</h3>
+          <ul>
+            <li><strong>Unstructured Data Inundation</strong>: Invoices across dozens of jurisdictions, crumpled receipts, scanned PDFs, diverse bank statements (MT940, CAMT.053, non-standard CSVs), and variable legal contracts. Rule-based OCR breaks whenever layouts vary.</li>
+            <li><strong>The Fragility of Edge Cases</strong>: Traditional RPA tools (e.g., UiPath) are deterministic if-else scripts. A vendor tax code change or a wire fee discrepancy of $0.02 causes the pipeline to throw an exception, kicking the task back into human queues.</li>
+            <li><strong>Siloed Enterprise Applications</strong>: CRM, WMS, Procurement (Coupa), Core ERP (SAP, NetSuite), and banking portals operate in isolation. Human accountants spend countless hours exporting Excel files and running manual VLOOKUP operations.</li>
+          </ul>
+
+          <h3>Why Accounting is Uniquely Suited for AI Agents</h3>
+          <p>Double-entry bookkeeping is anchored by a strict mathematical identity:</p>
+          <div style="text-align: center; margin: 1.5rem 0; font-size: 1.15rem;">
+            \[ \text{Assets} = \text{Liabilities} + \text{Equity} \quad \left(\sum \text{Debits} \equiv \sum \text{Credits}\right) \]
+          </div>
+          <p>
+            Tax codes and accounting standards (US GAAP, IFRS, CAS) provide deterministic ground truths against which agent reasoning can be verified, creating a natural <strong>Verification Loop</strong>.
+          </p>
+        </section>
+
+        <section id="paradigm">
+          <h2>2. The Paradigm Shift: Traditional RPA vs Financial Copilot vs Financial AI Agent</h2>
+          <p>Market observers frequently confuse AI Agents with "advanced RPA" or "chatbots with APIs." The fundamental distinctions are captured below:</p>
+
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Evaluation Dimension</th>
+                  <th>Traditional Financial RPA</th>
+                  <th>Financial AI Copilot</th>
+                  <th>Financial AI Agent</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Primary Driver</strong></td>
+                  <td>Hardcoded rules, UI click scripts, timers</td>
+                  <td>Prompt-driven LLM dialogue</td>
+                  <td><strong>Autonomous planning, perception-decision-action loops</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>Interaction Paradigm</strong></td>
+                  <td>Unattended scripts (fails on exceptions)</td>
+                  <td>Human prompts, LLM answers (human in driver seat)</td>
+                  <td><strong>Agent drives sub-tasks; escalates only upon low confidence</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>Unstructured Data</strong></td>
+                  <td>Fragile (requires fixed templates)</td>
+                  <td>Strong (summarizes text & policies)</td>
+                  <td><strong>Comprehensive (extracts entities, reasons semantics & balanced entries)</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>Environmental Action</strong></td>
+                  <td>Superficial UI clicking</td>
+                  <td>Weak (usually returns text proposals)</td>
+                  <td><strong>Deep tool execution via Function Calling & MCP Protocols</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>Self-Healing & Reflection</strong></td>
+                  <td>Zero (throws uncaught exceptions)</td>
+                  <td>Requires explicit human re-prompting</td>
+                  <td><strong>Autonomous reflection, root-cause diagnosis, fuzzy retry</strong></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="architecture">
+          <h2>3. System Architecture: The Four-Pillar Engine of Financial AI Agents</h2>
+          <p>Enterprise-grade compliance and auditability require four interconnected subsystems:</p>
+
+          <div class="diagram-box">
+                     +------------------------------------------------+
+                     |           Controller Orchestration Core        |
+                     +------------------------------------------------+
+                                              |
+        +-------------------+-----------------+-------------------+-------------------+
+        |                   |                                     |                   |
+        v                   v                                     v                   v
++---------------+   +---------------------------------+   +---------------+   +---------------+
+| Perception    |   | Financial Memory Subsystem      |   | Planning &    |   | Action & Tool |
+| Engine        |   |                                 |   | Reasoning     |   | Ecosystem     |
++---------------+   +---------------------------------+   +---------------+   +---------------+
+| * Layout OCR  |   | [Working / Ephemeral Memory]    |   | * Financial   |   | * ERP API     |
+| * Multimodal  |   |  - Current close checklist state|   |   Chain-of-   |   |   (SAP/NetS.) |
+|   Doc Vision  |   | [Long-Term Regulatory Memory]   |   |   Thought     |   | * Banking API |
+| * Contract    |   |  - GAAP/IFRS Standards Vector DB|   | * ReAct Loop  |   | * Tax Portals |
+|   Clause NLP  |   |  - Chart of Accounts (COA) Graph|   | * Self-Reflect|   | * Notification|
+| * Bank Feed   |   |  - Vendor transaction history   |   | * Guardrail   |   |   & Escalation|
+|   Parsers     |   |  - Historical audit trails      |   |   Assertion   |   |               |
++---------------+   +---------------------------------+   +---------------+   +---------------+</div>
+
+          <ol>
+            <li><strong>Perception Engine</strong>: Combines vision-language models with document intelligence to parse crumpled invoices, international customs forms, and heterogeneous bank feeds.</li>
+            <li><strong>Financial Memory</strong>: Leverages Graph RAG to retain corporate Chart of Accounts (COA), tax deduction thresholds, and vendor historical profiles.</li>
+            <li><strong>Planning & Financial Reasoning</strong>: Implements Financial Chain-of-Thought (F-CoT) to establish economic substance, determine GAAP/IFRS treatments, and enforce balanced double-entry vouchers.</li>
+            <li><strong>Action & Tool Integration</strong>: Interfaces with core ERPs (SAP, NetSuite, Kingdee) and banking gateways via standardized Model Context Protocol (MCP) tool contracts.</li>
+          </ol>
+        </section>
+
+        <section id="scenarios">
+          <h2>4. Five Core Production Scenarios Analyzed</h2>
+          <h3>4.1 Intelligent Expense Control and Autonomous Auditing</h3>
+          <p>Eliminates repetitive receipt cross-checking. The Auditor Agent verifies tax numbers in real time, executes full-repository duplicate detection, and checks itemized lines against corporate compliance rules (e.g., flagging unapproved gift card purchases masked as office supplies).</p>
+
+          <h3>4.2 Multi-Source Complex Reconciliation and Self-Healing Matching</h3>
+          <p>Conquers N-to-M fuzzy clustering across Purchase Orders (PO), Goods Receipts (GR), and Invoices. Discrepancies such as wire charges ($12.50) are automatically identified based on historical bank fee behaviors and posted to financial expense accruals without halting workflows.</p>
+
+          <h3>4.3 Autonomous Month-End Close and Intercompany Consolidation</h3>
+          <p>Orchestrated by a dynamic task DAG, the close agent monitors subledger completion, automates depreciation and amortization schedules, adjusts unrealized FX gains/losses, and synthesizes eliminating journal entries for intercompany sales.</p>
+
+          <h3>4.4 Dynamic Tax Compliance and Algorithmic Risk Control</h3>
+          <p>Monitors deductible input VAT, flags non-deductible items, benchmarks synthetic corporate tax burdens against regulatory audit models, and pre-populates tax filing returns.</p>
+
+          <h3>4.5 Predictive Management Accounting and Continuous FP&A</h3>
+          <p>Shifts management reporting from rear-view mirrors to forward navigation with voucher-level variance diagnosis and rolling 90-day Monte Carlo liquidity stress testing.</p>
+        </section>
+
+        <section id="multi-agent">
+          <h2>5. Multi-Agent Collaboration: Architecting the Virtual Finance Office</h2>
+          <p>Monolithic prompts collapse under enterprise complexity. Production architectures employ specialized Multi-Agent Systems (MAS):</p>
+
+          <div class="diagram-box">
+                    +-------------------------------------+
+                    |   CFO / Controller Orchestrator     |
+                    +-------------------------------------+
+                                       │ Task Routing & Supervision
+          ┌────────────────────────────┼───────────────────────────┐
+          ▼                            ▼                           ▼
++---------------------+      +---------------------+     +---------------------+
+| Auditor Agent       |      | Bookkeeper Agent    |     | Recon Agent         |
++---------------------+      +---------------------+     +---------------------+
+| · Tax ID Validation |      | · Account Mapping   |     | · 3-Way Matching    |
+| · Policy Compliance |      | · Double-Entry Gen  |     | · Bank Rec Matching |
+| · Fraud Screening   |      | · ERP API Delivery  |     | · Variance Tracing  |
++---------------------+      +---------------------+     +---------------------+
+                                       │ Agent Debate & Cross-Verification
+                                       ▼
+                    +-------------------------------------+
+                    |      Human-in-the-Loop (HITL)       |
+                    | (Senior Controller Review Console)  |
+                    +-------------------------------------+</div>
+
+          <p>
+            <strong>Agent Debate Mechanism</strong>: If the Bookkeeper proposes booking a 3-year cloud infrastructure lease as a period expense, the Auditor Agent intervenes, citing IFRS 16 to mandate right-of-use (ROU) asset and lease liability capitalization.
+          </p>
+        </section>
+
+        <section id="guardrails">
+          <h2>6. Deterministic Guardrails: Bridging Hallucination & Zero-Tolerance Determinism</h2>
+          <p>LLMs are probabilistic engines; financial accounting demands absolute determinism. Two engineering principles are non-negotiable:</p>
+          <ul>
+            <li><strong>Deterministic Mathematical Code</strong>: Never allow LLMs to perform arithmetic calculations. LLMs handle semantic reasoning; exact figures must be evaluated using deterministic Python <code>Decimal</code> routines enforcing \(\sum \text{Debit} - \sum \text{Credit} \equiv 0.00\).</li>
+            <li><strong>Immutable Machine-Readable Audit Trails</strong>: Every inference step and tool execution is persisted into structured audit traces.</li>
+          </ul>
+
+          <div class="code-block-wrapper">
+            <div class="code-block-header">
+              <span>audit_trail_sample.json</span>
+              <button class="copy-btn" onclick="copyCode(this)"><i data-lucide="copy"></i> Copy</button>
+            </div>
+            <pre><code class="language-json">{
+  "trace_id": "aud_20260327_98412",
+  "document_id": "INV_2026031201",
+  "reasoning_steps": [
+    "Step 1: Recognized GPU compute cluster purchase under contract CT-2026-003",
+    "Step 2: Classified under R&D technological development expenses (eligible for R&D super-deduction)",
+    "Step 3: Deterministic calculation: Net Amount = $10,000.00, VAT (6%) = $600.00"
+  ],
+  "proposed_entry": [
+    {"direction": "Debit", "account": "6602.05 (R&D Expenses - Cloud Compute)", "amount": 10000.00},
+    {"direction": "Debit", "account": "2221.01.01 (VAT Recoverable)", "amount": 600.00},
+    {"direction": "Credit", "account": "2202.01 (Accounts Payable)", "amount": 10600.00}
+  ],
+  "guardrail_status": {
+    "balance_check": "PASSED (Diff = 0.00)",
+    "confidence_score": 0.994
+  }
+}</code></pre>
+          </div>
+        </section>
+
+        <section id="live-demo">
+          <h2>✨ Interactive Multi-Agent Pipeline Simulation</h2>
+          <p>Experience an end-to-end multi-agent execution pipeline across compliance audit, 3-way matching, and deterministic journal posting:</p>
+
+          <div class="interactive-card">
+            <div class="interactive-header">
+              <div class="interactive-title">
+                <i data-lucide="play-circle" style="color: var(--accent);"></i>
+                <span id="demo-title-text">Autonomous Financial Multi-Agent Pipeline</span>
+              </div>
+              <button class="run-demo-btn" id="run-pipeline-btn">
+                <i data-lucide="play"></i>
+                <span id="demo-run-btn-text">Run Pipeline</span>
+              </button>
+            </div>
+
+            <div class="demo-pipeline">
+              <div class="pipeline-step" id="step-1">
+                <div class="step-number">Agent 01</div>
+                <div class="step-name">Compliance (Auditor)</div>
+                <div class="step-status" id="step-1-status">Idle</div>
+              </div>
+              <div class="pipeline-step" id="step-2">
+                <div class="step-number">Agent 02</div>
+                <div class="step-name">Matching (Recon)</div>
+                <div class="step-status" id="step-2-status">Idle</div>
+              </div>
+              <div class="pipeline-step" id="step-3">
+                <div class="step-number">Agent 03</div>
+                <div class="step-name">Posting (Bookkeeper)</div>
+                <div class="step-status" id="step-3-status">Idle</div>
+              </div>
+              <div class="pipeline-step" id="step-4">
+                <div class="step-number">Guardrail</div>
+                <div class="step-name">Balance Assertion</div>
+                <div class="step-status" id="step-4-status">Idle</div>
+              </div>
+            </div>
+
+            <div class="demo-output-box" id="demo-output">Click [Run Pipeline] above to observe multi-agent orchestration logs and audit traces...</div>
+          </div>
+        </section>
+
+        <section id="summary">
+          <h2>7. Conclusion: The Dawn of Autonomous Continuous Accounting</h2>
+          <p>
+            The purpose of AI Agents is not to replace human accountants, but to permanently eliminate repetitive, low-value data handling.
+            Month-end closes will no longer be panicked all-nighters, because transactions are audited, reconciled, and posted continuously in real time.
+          </p>
+          <p>
+            From retrospective "ledger keepers" into forward-looking "Agent Orchestrators and Strategic Architects," accounting is entering an exciting new renaissance.
+          </p>
+        </section>
+        `
+      },
+      zh: {
+        indicator: "English",
+        navBack: "Finance-AI 知识库主页",
+        tocHeader: "目录导航",
+        metaReadTime: "约 12 分钟阅读",
+        toc: {
+          abstract: "文章摘要",
+          evolution: "一、演进脉络：为什么是会计？",
+          paradigm: "二、传统 RPA vs Copilot vs Agent",
+          architecture: "三、核心架构：四维驱动引擎",
+          scenarios: "四、五大落地场景深度解构",
+          multiAgent: "五、多智能体协同：虚拟财务室",
+          guardrails: "六、工程挑战：破解幻觉与零容错",
+          demo: "✨ 在线交互原型演示",
+          summary: "七、总结与展望：连续财务时代"
+        },
+        title: "从规则驱动到自主协同：AI Agent 在会计行业的落地演进与未来重塑",
+        html: `
         <section id="abstract">
           <div class="callout">
             <div class="callout-title">
@@ -705,7 +1024,6 @@
           </div>
         </section>
 
-        <!-- Section 1 -->
         <section id="evolution">
           <h2>一、演进脉络：为什么会计是 AI Agent 的最佳土壤？</h2>
           <p>会计作为商业的“通用语言”，长期以来被公认为数字化程度最高、但同时也是“人工补丁”最多的领域之一。回顾其三十年的技术沿革：</p>
@@ -725,18 +1043,15 @@
           </ul>
 
           <h3>为什么会计是 AI Agent 的天然沃土？</h3>
-          <p>
-            首先，会计拥有极其明确的公理化验证闭环——复式记账法遵循恒等式：
-          </p>
+          <p>复式记账法遵循恒等式：</p>
           <div style="text-align: center; margin: 1.5rem 0; font-size: 1.15rem;">
             \[ \text{资产} = \text{负债} + \text{所有者权益} \quad (\sum \text{Debit} \equiv \sum \text{Credit}) \]
           </div>
           <p>
-            这使得智能体在推理每一笔凭证时，都有坚固的<strong>数学与准则约束（Verification Loop）</strong>；同时，财务业务目标清晰（例如“完成本月所有银行存款对账并出具余额调节表”），非常契合智能体的子任务规划与自省机制。
+            这使得智能体在推理每一笔凭证时，都有坚固的数学与准则约束（Verification Loop）；同时财务业务目标清晰，非常契合智能体的子任务规划与自省机制。
           </p>
         </section>
 
-        <!-- Section 2 -->
         <section id="paradigm">
           <h2>二、范式革新：传统 RPA vs 财务 Copilot vs 财务 AI Agent</h2>
           <p>业界常将 AI Agent 误解为“更聪明的脚本”或“带对话框的聊天助手”。三者的本质区别如下表所示：</p>
@@ -787,7 +1102,6 @@
           </div>
         </section>
 
-        <!-- Section 3 -->
         <section id="architecture">
           <h2>三、核心架构：财务 AI Agent 的四维驱动引擎</h2>
           <p>一个面向企业生产环境的财务智能体，需具备四大核心子系统支撑：</p>
@@ -820,10 +1134,8 @@
           </ol>
         </section>
 
-        <!-- Section 4 -->
         <section id="scenarios">
           <h2>四、五大落地场景深度解构</h2>
-
           <h3>4.1 智能费用管控与自主合规审计</h3>
           <p>传统报销中 60% 的工时被“查验真伪、查连号发票、算差旅标准超标”占据。AI Agent 能在员工提交瞬间完成税局真伪验证、全库防重，并通过语义模型理解消费明细（如发现办公用品发票附单为礼品卡则自动拦截并援引内控制度）。</p>
 
@@ -840,7 +1152,6 @@
           <p>告别“次月中旬才看到上月财报”的后视镜模式。Agent 能够开展凭证级多维方差分析（如精准下钻解释华东区销售费用超支动因），并结合蒙特卡洛模拟预测未来 90 天现金流敞口。</p>
         </section>
 
-        <!-- Section 5 -->
         <section id="multi-agent">
           <h2>五、多智能体协同：虚拟财务室架构设计</h2>
           <p>单一 Agent 在面对复杂审计与庞大业务量时易出现上下文迷航，构建分工明确的 Multi-Agent System (MAS) 是产业最佳实践：</p>
@@ -873,7 +1184,6 @@
           </p>
         </section>
 
-        <!-- Section 6 -->
         <section id="guardrails">
           <h2>六、工程挑战：破解“幻觉”与“零容错”矛盾</h2>
           <p>大模型本质是概率生成系统，而财务要求 100% 确定性。工程实践必须遵循两大基石：</p>
@@ -908,7 +1218,6 @@
           </div>
         </section>
 
-        <!-- Live Demo Interactive Widget -->
         <section id="live-demo">
           <h2>✨ 在线交互原型演示 (Interactive Demo)</h2>
           <p>体验 Multi-Agent 在发票合规审计、三单匹配以及记账分录生成的全自主流水线：</p>
@@ -917,11 +1226,11 @@
             <div class="interactive-header">
               <div class="interactive-title">
                 <i data-lucide="play-circle" style="color: var(--accent);"></i>
-                <span>财务多智能体自主流水线协同模拟</span>
+                <span id="demo-title-text">财务多智能体自主流水线协同模拟</span>
               </div>
               <button class="run-demo-btn" id="run-pipeline-btn">
                 <i data-lucide="play"></i>
-                <span>运行流水线</span>
+                <span id="demo-run-btn-text">运行流水线</span>
               </button>
             </div>
 
@@ -952,7 +1261,6 @@
           </div>
         </section>
 
-        <!-- Section 7 -->
         <section id="summary">
           <h2>七、总结与展望：迈向“实时连续审计”的财务新时代</h2>
           <p>
@@ -963,37 +1271,76 @@
             从“记账员”到“Agent 编排与业务洞察架构师”，会计职业正在迎来前所未有的跃迁机遇。
           </p>
         </section>
+        `
+      }
+    };
 
-      </div>
-    </article>
-  </div>
+    // Default Language: English ('en')
+    let currentLang = localStorage.getItem('finance_ai_lang') || 'en';
 
-  <!-- Footer -->
-  <footer>
-    <p>© 2026 SHUNCHAOZHOU. All Rights Reserved. Based on MIT License.</p>
-    <div class="footer-links">
-      <a href="https://github.com/SHUNCHAOZHOU/Finance-AI" target="_blank" rel="noopener">GitHub 仓库</a>
-      <a href="https://github.com/SHUNCHAOZHOU/Finance-AI/blob/main/articles/ai_agent_in_accounting.md" target="_blank" rel="noopener">Markdown 源码</a>
-      <a href="https://github.com/SHUNCHAOZHOU/Finance-AI/blob/main/examples/multi_agent_accounting_demo.py" target="_blank" rel="noopener">Python 示例</a>
-    </div>
-  </footer>
+    function renderArticle(lang) {
+      currentLang = lang;
+      localStorage.setItem('finance_ai_lang', lang);
+      document.documentElement.lang = lang;
 
-  <script>
-    // Initialize Lucide Icons
-    lucide.createIcons();
+      const data = articleData[lang];
+      document.getElementById('lang-indicator').innerText = data.indicator;
+      document.getElementById('nav-back-text').innerText = data.navBack;
+      document.getElementById('toc-header').innerText = data.tocHeader;
+      document.getElementById('meta-read-time').innerText = data.metaReadTime;
+      document.getElementById('article-title').innerText = data.title;
 
-    // Theme Switcher
-    const themeBtn = document.getElementById('theme-toggle');
-    const themeIcon = document.getElementById('theme-icon');
-    const body = document.body;
+      // Update TOC text
+      document.getElementById('toc-abstract').innerText = data.toc.abstract;
+      document.getElementById('toc-evolution').innerText = data.toc.evolution;
+      document.getElementById('toc-paradigm').innerText = data.toc.paradigm;
+      document.getElementById('toc-architecture').innerText = data.toc.architecture;
+      document.getElementById('toc-scenarios').innerText = data.toc.scenarios;
+      document.getElementById('toc-multi-agent').innerText = data.toc.multiAgent;
+      document.getElementById('toc-guardrails').innerText = data.toc.guardrails;
+      document.getElementById('toc-demo').innerText = data.toc.demo;
+      document.getElementById('toc-summary').innerText = data.toc.summary;
 
-    themeBtn.addEventListener('click', () => {
-      const currentTheme = body.getAttribute('data-theme');
-      const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
-      body.setAttribute('data-theme', nextTheme);
-      themeIcon.setAttribute('data-lucide', nextTheme === 'dark' ? 'sun' : 'moon');
+      // Inject HTML
+      const container = document.getElementById('article-content');
+      container.innerHTML = data.html;
+
+      // Re-trigger math & code rendering
+      if (window.renderMathInElement) {
+        renderMathInElement(container, {
+          delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '\\[', right: '\\]', display: true},
+            {left: '\\(', right: '\\)', display: false},
+            {left: '$', right: '$', display: false}
+          ]
+        });
+      }
+      Prism.highlightAll();
       lucide.createIcons();
+
+      // Bind interactive demo button again
+      initDemoPipeline(lang);
+    }
+
+    // Toggle button handler
+    const langBtn = document.getElementById('lang-toggle-btn');
+    langBtn.addEventListener('click', () => {
+      const nextLang = currentLang === 'en' ? 'zh' : 'en';
+      renderArticle(nextLang);
     });
+
+    // Copy Code function
+    function copyCode(btn) {
+      const pre = btn.closest('.code-block-wrapper').querySelector('pre');
+      navigator.clipboard.writeText(pre.innerText).then(() => {
+        const originalText = btn.innerHTML;
+        btn.innerHTML = currentLang === 'en' ? 'Copied!' : '已复制!';
+        setTimeout(() => {
+          btn.innerHTML = originalText;
+        }, 2000);
+      });
+    }
 
     // Reading Scroll Progress Indicator
     window.addEventListener('scroll', () => {
@@ -1002,11 +1349,10 @@
       const scrolled = (winScroll / height) * 100;
       document.getElementById('progress-bar').style.width = scrolled + '%';
 
-      // Highlight active TOC item
       const sections = document.querySelectorAll('section[id]');
       let currentSectionId = '';
       sections.forEach(section => {
-        const sectionTop = section.offsetTop - 120;
+        const sectionTop = section.offsetTop - 130;
         if (winScroll >= sectionTop) {
           currentSectionId = section.getAttribute('id');
         }
@@ -1020,70 +1366,76 @@
       });
     });
 
-    // Code block copy function
-    function copyCode(btn) {
-      const pre = btn.closest('.code-block-wrapper').querySelector('pre');
-      navigator.clipboard.writeText(pre.innerText).then(() => {
-        const originalText = btn.innerHTML;
-        btn.innerHTML = '已复制!';
-        setTimeout(() => {
-          btn.innerHTML = originalText;
-        }, 2000);
+    // Interactive Demo Pipeline
+    function initDemoPipeline(lang) {
+      const runBtn = document.getElementById('run-pipeline-btn');
+      const outputBox = document.getElementById('demo-output');
+      if (!runBtn) return;
+
+      const isEn = lang === 'en';
+
+      const steps = [
+        { id: 'step-1', status: 'step-1-status', text: isEn ? 'Auditing...' : '正在审计...', finish: isEn ? '✓ Verified' : '✓ 合规通过' },
+        { id: 'step-2', status: 'step-2-status', text: isEn ? 'Matching...' : '正在匹配...', finish: isEn ? '✓ 3-Way Matched' : '✓ 三单一致' },
+        { id: 'step-3', status: 'step-3-status', text: isEn ? 'Synthesizing...' : '正在推导...', finish: isEn ? '✓ Entry Synthesized' : '✓ 分录编排完成' },
+        { id: 'step-4', status: 'step-4-status', text: isEn ? 'Asserting...' : '正在校验...', finish: isEn ? '✓ Balanced ($10,600)' : '✓ 借贷平衡 (10600.00)' }
+      ];
+
+      runBtn.addEventListener('click', async () => {
+        runBtn.disabled = true;
+        runBtn.style.opacity = '0.6';
+        
+        outputBox.innerText = isEn 
+          ? "[Orchestrator] Initiating Multi-Agent Financial Pipeline...\nTarget Document: INV-20260327-0091 ($10,600.00)\n"
+          : "[Orchestrator] 启动多智能体财务处理协同工作流...\n待处理发票: INV-20260327-0091 (金额: 10,600.00 元)\n";
+
+        steps.forEach(s => {
+          document.getElementById(s.id).classList.remove('active');
+          document.getElementById(s.status).innerText = isEn ? 'Idle' : '等待中';
+          document.getElementById(s.status).style.color = 'var(--text-muted)';
+        });
+
+        for (let i = 0; i < steps.length; i++) {
+          const s = steps[i];
+          const stepEl = document.getElementById(s.id);
+          const statusEl = document.getElementById(s.status);
+
+          stepEl.classList.add('active');
+          statusEl.innerText = s.text;
+          statusEl.style.color = 'var(--accent)';
+
+          await new Promise(r => setTimeout(r, 650));
+
+          statusEl.innerText = s.finish;
+          statusEl.style.color = 'var(--emerald)';
+
+          if (i === 0) {
+            outputBox.innerText += isEn
+              ? "\n[AuditorAgent] Seller Tax TIN verified against registry; item category & VAT (6%) compliant."
+              : "\n[AuditorAgent] 税局发票查验真伪通过，税率(6%)与开票品目合规。";
+          } else if (i === 1) {
+            outputBox.innerText += isEn
+              ? "\n[ReconAgent] Invoice total ($10,600.00) matches Purchase Order PO-2026-CLOUD-01 perfectly."
+              : "\n[ReconAgent] 发票金额 (10,600.00) 与采购订单 PO-2026-CLOUD-01 完全吻合。";
+          } else if (i === 2) {
+            outputBox.innerText += isEn
+              ? "\n[BookkeeperAgent] Synthesized balanced double-entry voucher:\n  - Debit:  6602.05 (R&D Expenses - Cloud Compute) $10,000.00\n  - Debit:  2221.01.01 (VAT Recoverable) $600.00\n  - Credit: 2202.01 (Accounts Payable) $10,600.00"
+              : "\n[BookkeeperAgent] 自动识别为研发算力采购，生成借贷记账凭证：\n  - 借: 6602.05 (研发费用-技术服务费) 10,000.00\n  - 借: 2221.01.01 (应交税费-进项税额) 600.00\n  - 贷: 2202.01 (应付账款-供应商款) 10,600.00";
+          } else if (i === 3) {
+            outputBox.innerText += isEn
+              ? "\n[Deterministic Guardrail] Asserted Debit - Credit == $0.00. Ready for ERP ledger posting!\n\n🎉 Audit trail logged to disk. Voucher synchronized with General Ledger."
+              : "\n[Deterministic Guardrail] 强校验借贷差额 = 0.00 元，入账就绪！\n\n🎉 审计底稿已生成，凭证已自动同步至 ERP 总账。";
+          }
+          outputBox.scrollTop = outputBox.scrollHeight;
+        }
+
+        runBtn.disabled = false;
+        runBtn.style.opacity = '1';
       });
     }
 
-    // Live Demo Pipeline Simulation
-    const runBtn = document.getElementById('run-pipeline-btn');
-    const outputBox = document.getElementById('demo-output');
-
-    const steps = [
-      { id: 'step-1', status: 'step-1-status', text: '正在审计...', finish: '✓ 合规通过' },
-      { id: 'step-2', status: 'step-2-status', text: '正在匹配...', finish: '✓ 三单一致' },
-      { id: 'step-3', status: 'step-3-status', text: '正在推导...', finish: '✓ 分录编排完成' },
-      { id: 'step-4', status: 'step-4-status', text: '正在校验...', finish: '✓ 借贷平衡 (10600.00)' }
-    ];
-
-    runBtn.addEventListener('click', async () => {
-      runBtn.disabled = true;
-      runBtn.style.opacity = '0.6';
-      outputBox.innerText = "[Orchestrator] 启动多智能体财务处理协同工作流...\n待处理发票: INV-20260327-0091 (金额: 10,600.00 元)\n";
-
-      // Reset step styles
-      steps.forEach(s => {
-        document.getElementById(s.id).classList.remove('active');
-        document.getElementById(s.status).innerText = '等待中';
-        document.getElementById(s.status).style.color = 'var(--text-muted)';
-      });
-
-      for (let i = 0; i < steps.length; i++) {
-        const s = steps[i];
-        const stepEl = document.getElementById(s.id);
-        const statusEl = document.getElementById(s.status);
-
-        stepEl.classList.add('active');
-        statusEl.innerText = s.text;
-        statusEl.style.color = 'var(--accent)';
-
-        await new Promise(r => setTimeout(r, 650));
-
-        statusEl.innerText = s.finish;
-        statusEl.style.color = 'var(--emerald)';
-
-        if (i === 0) {
-          outputBox.innerText += "\n[AuditorAgent] 税局发票查验真伪通过，税率(6%)与开票品目合规。";
-        } else if (i === 1) {
-          outputBox.innerText += "\n[ReconAgent] 发票金额 (10,600.00) 与采购订单 PO-2026-CLOUD-01 完全吻合。";
-        } else if (i === 2) {
-          outputBox.innerText += "\n[BookkeeperAgent] 自动识别为研发算力采购，生成借贷记账凭证：\n  - 借: 6602.05 (研发费用-技术服务费) 10,000.00\n  - 借: 2221.01.01 (应交税费-进项税额) 600.00\n  - 贷: 2202.01 (应付账款-供应商款) 10,600.00";
-        } else if (i === 3) {
-          outputBox.innerText += "\n[Deterministic Guardrail] 强校验借贷差额 = 0.00 元，入账就绪！\n\n🎉 审计底稿已生成，凭证已自动同步至 ERP 总账。";
-        }
-        outputBox.scrollTop = outputBox.scrollHeight;
-      }
-
-      runBtn.disabled = false;
-      runBtn.style.opacity = '1';
-    });
+    // Initialize Default Render
+    renderArticle(currentLang);
   </script>
 </body>
 </html>
